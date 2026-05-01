@@ -4,11 +4,18 @@ import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
 /**
- * Content Block Section Component
+ * Content Block Section Component.
+ *
+ * Strapi `layout.content` schema names the heading field `heading` but
+ * earlier versions of this component (and its consumers) used `title`.
+ * Accept both — `title` wins if both are passed — so neither rename
+ * breaks rendering.
  */
 const ContentBlock = ({
   title,
+  heading,
   content,
+  body, // legacy alias from older seed scripts; treated as `content`
   backgroundColor = '#ffffff',
   textColor = '#333333',
   maxWidth = 'medium',
@@ -16,6 +23,8 @@ const ContentBlock = ({
   alignment = 'left',
   className = '',
 }) => {
+  const resolvedTitle = title || heading;
+  const resolvedContent = content || body;
   const maxWidthMap = {
     small: '600px',
     medium: '800px',
@@ -45,17 +54,17 @@ const ContentBlock = ({
   return (
     <section className={clsx('content-block-section', className)} style={containerStyle}>
       <div style={contentStyle}>
-        {title && (
-          <h2 style={{ 
+        {resolvedTitle && (
+          <h2 style={{
             fontSize: '2rem',
             marginBottom: '1.5rem',
             fontWeight: 700,
           }}>
-            {title}
+            {resolvedTitle}
           </h2>
         )}
 
-        <div 
+        <div
           className="content-body"
           style={{
             lineHeight: 1.8,
@@ -63,7 +72,7 @@ const ContentBlock = ({
           }}
         >
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>
-            {content}
+            {resolvedContent || ''}
           </ReactMarkdown>
         </div>
       </div>

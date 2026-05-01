@@ -66585,11 +66585,18 @@ var VideoEmbed = function VideoEmbed(_ref) {
 };
 
 /**
- * Content Block Section Component
+ * Content Block Section Component.
+ *
+ * Strapi `layout.content` schema names the heading field `heading` but
+ * earlier versions of this component (and its consumers) used `title`.
+ * Accept both — `title` wins if both are passed — so neither rename
+ * breaks rendering.
  */
 var ContentBlock = function ContentBlock(_ref) {
   var title = _ref.title,
+    heading = _ref.heading,
     content = _ref.content,
+    body = _ref.body,
     _ref$backgroundColor = _ref.backgroundColor,
     backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
     _ref$textColor = _ref.textColor,
@@ -66602,6 +66609,8 @@ var ContentBlock = function ContentBlock(_ref) {
     alignment = _ref$alignment === void 0 ? 'left' : _ref$alignment,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
+  var resolvedTitle = title || heading;
+  var resolvedContent = content || body;
   var maxWidthMap = {
     small: '600px',
     medium: '800px',
@@ -66629,13 +66638,13 @@ var ContentBlock = function ContentBlock(_ref) {
     style: containerStyle
   }, /*#__PURE__*/React.createElement("div", {
     style: contentStyle
-  }, title && /*#__PURE__*/React.createElement("h2", {
+  }, resolvedTitle && /*#__PURE__*/React.createElement("h2", {
     style: {
       fontSize: '2rem',
       marginBottom: '1.5rem',
       fontWeight: 700
     }
-  }, title), /*#__PURE__*/React.createElement("div", {
+  }, resolvedTitle), /*#__PURE__*/React.createElement("div", {
     className: "content-body",
     style: {
       lineHeight: 1.8,
@@ -66643,7 +66652,7 @@ var ContentBlock = function ContentBlock(_ref) {
     }
   }, /*#__PURE__*/React.createElement(Markdown, {
     rehypePlugins: [rehypeRaw]
-  }, content))));
+  }, resolvedContent || ''))));
 };
 
 /**
@@ -68786,7 +68795,11 @@ var buildNavigationTree = function buildNavigationTree(pages) {
 
 /**
  * Page type enum values that map to URL paths.
- * "home" maps to "/", everything else maps to "/{pageType}".
+ *
+ * `products` maps to `/product` (singular). The Strapi pageType enum is
+ * plural because Strapi conventions use plural collection-style names,
+ * but the canonical URL is singular — most sites have one Product page,
+ * not many.
  */
 var PAGE_TYPE_ROUTES = {
   home: '/',
@@ -68794,24 +68807,41 @@ var PAGE_TYPE_ROUTES = {
   about: '/about',
   contact: '/contact',
   solutions: '/solutions',
-  products: '/products',
+  products: '/product',
   blog: '/blog',
   careers: '/careers',
   terms: '/terms',
   privacy: '/privacy'
 };
 
+// Reverse-lookup: URL slug → pageType enum value.
+var ROUTE_TO_PAGE_TYPE = Object.fromEntries(Object.entries(PAGE_TYPE_ROUTES).map(function (_ref) {
+  var _ref2 = _slicedToArray(_ref, 2),
+    type = _ref2[0],
+    route = _ref2[1];
+  return [route.replace(/^\//, '') || 'home', type];
+}));
+
 /**
  * Resolve a URL path to a pageType enum value.
  *
  * "/" or "" → "home"
  * "/pricing" → "pricing"
+ * "/product" → "products" (URL-singular, enum-plural)
  * "/anything-else" → treated as a customSlug
  */
 var resolvePageType = function resolvePageType(path) {
   var clean = (path || '/').replace(/^\/+|\/+$/g, '') || 'home';
 
-  // Check if it's a known page type
+  // Try the URL → pageType reverse map first (handles /product → products).
+  if (ROUTE_TO_PAGE_TYPE[clean] !== undefined) {
+    return {
+      pageType: ROUTE_TO_PAGE_TYPE[clean],
+      isCustom: false
+    };
+  }
+
+  // Fallback: maybe the slug already IS the pageType (e.g. /blog).
   if (PAGE_TYPE_ROUTES[clean] !== undefined) {
     return {
       pageType: clean,
@@ -68819,7 +68849,7 @@ var resolvePageType = function resolvePageType(path) {
     };
   }
 
-  // Otherwise it's a custom slug
+  // Otherwise treat as custom slug.
   return {
     pageType: 'custom',
     isCustom: true,
@@ -68868,7 +68898,7 @@ var usePage = function usePage(pageType, customSlug) {
     }
     var mounted = true;
     var loadPage = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
         var data, _t;
         return _regenerator().w(function (_context) {
           while (1) switch (_context.p = _context.n) {
@@ -68915,7 +68945,7 @@ var usePage = function usePage(pageType, customSlug) {
         }, _callee, null, [[0, 5, 6, 7]]);
       }));
       return function loadPage() {
-        return _ref.apply(this, arguments);
+        return _ref3.apply(this, arguments);
       };
     }();
     loadPage();

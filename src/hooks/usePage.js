@@ -3,7 +3,11 @@ import { useStrapi } from '../context/StrapiContext';
 
 /**
  * Page type enum values that map to URL paths.
- * "home" maps to "/", everything else maps to "/{pageType}".
+ *
+ * `products` maps to `/product` (singular). The Strapi pageType enum is
+ * plural because Strapi conventions use plural collection-style names,
+ * but the canonical URL is singular — most sites have one Product page,
+ * not many.
  */
 const PAGE_TYPE_ROUTES = {
   home: '/',
@@ -11,29 +15,43 @@ const PAGE_TYPE_ROUTES = {
   about: '/about',
   contact: '/contact',
   solutions: '/solutions',
-  products: '/products',
+  products: '/product',
   blog: '/blog',
   careers: '/careers',
   terms: '/terms',
   privacy: '/privacy',
 };
 
+// Reverse-lookup: URL slug → pageType enum value.
+const ROUTE_TO_PAGE_TYPE = Object.fromEntries(
+  Object.entries(PAGE_TYPE_ROUTES).map(([type, route]) => [
+    route.replace(/^\//, '') || 'home',
+    type,
+  ])
+);
+
 /**
  * Resolve a URL path to a pageType enum value.
  *
  * "/" or "" → "home"
  * "/pricing" → "pricing"
+ * "/product" → "products" (URL-singular, enum-plural)
  * "/anything-else" → treated as a customSlug
  */
 export const resolvePageType = (path) => {
   const clean = (path || '/').replace(/^\/+|\/+$/g, '') || 'home';
 
-  // Check if it's a known page type
+  // Try the URL → pageType reverse map first (handles /product → products).
+  if (ROUTE_TO_PAGE_TYPE[clean] !== undefined) {
+    return { pageType: ROUTE_TO_PAGE_TYPE[clean], isCustom: false };
+  }
+
+  // Fallback: maybe the slug already IS the pageType (e.g. /blog).
   if (PAGE_TYPE_ROUTES[clean] !== undefined) {
     return { pageType: clean, isCustom: false };
   }
 
-  // Otherwise it's a custom slug
+  // Otherwise treat as custom slug.
   return { pageType: 'custom', isCustom: true, customSlug: clean };
 };
 
