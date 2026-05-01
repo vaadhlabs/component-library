@@ -6,8 +6,13 @@ import { readFileSync } from 'fs';
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
 
+// Input is `src/exports.js` (the canonical export surface) — the build
+// emits to `src/index.js`, which is what `package.json#main` resolves to
+// for consumers. Without this, rollup would read its own previous bundle
+// as input, silently dropping any new exports added since the last
+// successful build.
 export default {
-  input: 'src/index.js',
+  input: 'src/exports.js',
   output: [
     {
       file: pkg.main,
