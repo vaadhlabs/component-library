@@ -9,7 +9,18 @@ global.IntersectionObserver = class {
 
 jest.mock('react-markdown', () => {
   const React = require('react');
+  // The real component (combined with rehypeRaw) parses HTML in the input
+  // string into DOM nodes. The mock matches that behaviour minimally for
+  // string children — uses dangerouslySetInnerHTML so e.g. `<p>Content 2</p>`
+  // becomes a real <p> node, not the literal text `<p>Content 2</p>`. Tests
+  // that assert text via getByText('Content 2') depend on this.
   function ReactMarkdown({ children }) {
+    if (typeof children === 'string') {
+      return React.createElement('div', {
+        'data-testid': 'react-markdown-stub',
+        dangerouslySetInnerHTML: { __html: children },
+      });
+    }
     return React.createElement(
       'div',
       { 'data-testid': 'react-markdown-stub' },
