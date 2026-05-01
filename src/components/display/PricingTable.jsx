@@ -1,15 +1,75 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { Check, X } from 'lucide-react';
 import Button from '../forms/Button';
+import { useStrapi } from '../../context/StrapiContext';
 
 /**
- * Pricing Table Section Component
+ * Map a Stripe price (as shaped by Strapi's /api/stripe/prices) into the
+ * PricingCard prop shape. Stripe is the source of truth — Strapi proxies +
+ * caches the call, the marketing site renders whatever Stripe says.
+ *
+ * Display rules:
+ *   - contactSales=true        → "Contact us" (no period suffix)
+ *   - unitAmount===0           → "$0" + /interval (e.g. Free tier)
+ *   - else                     → "$<amount>" + /interval
+ */
+const mapStripePriceToCard = (price) => {
+  const unitDollars = price.unitAmount != null ? price.unitAmount / 100 : null;
+  const period = price.interval && price.interval !== 'one_time' ? `/ ${price.interval}` : '';
+  let displayPrice;
+  let displayPeriod;
+  if (price.contactSales) {
+    displayPrice = 'Contact us';
+    displayPeriod = '';
+  } else if (unitDollars === 0) {
+    displayPrice = '$0';
+    displayPeriod = period;
+  } else if (unitDollars != null) {
+    displayPrice = `$${unitDollars.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+    displayPeriod = period;
+  } else {
+    displayPrice = '';
+    displayPeriod = '';
+  }
+
+  return {
+    id: price.id,
+    name: price.name,
+    description: price.description || '',
+    price: displayPrice,
+    period: displayPeriod,
+    features: price.features || [],
+    cta: {
+      text: price.ctaText || 'Get started',
+      link: price.ctaLink || '/contact',
+      style: price.popular ? 'secondary' : 'primary',
+    },
+    highlighted: !!price.popular,
+    badge: price.popular ? 'Most popular' : '',
+    sortOrder: price.sortOrder || 0,
+  };
+};
+
+/**
+ * Pricing Table Section Component.
+ *
+ * Two modes:
+ *   1. Static — pass `plans` from Strapi or any other source. Renders as-is.
+ *   2. Stripe-live — when `plans` is empty AND apiUrl is in StrapiContext,
+ *      fetches /api/stripe/prices and renders the live Stripe Products.
+ *      Stripe is then the single source of truth — edit the Product /
+ *      metadata in Stripe Dashboard and the marketing site reflects within
+ *      the cache TTL (60s strapi cache + browser cache-control).
+ *
+ * On fetch failure, falls back to whatever static `plans` were passed
+ * (empty list → empty grid, which is acceptable degradation for a pricing
+ * page).
  */
 const PricingTable = ({
   title,
   subtitle,
-  plans = [],
+  plans: staticPlans = [],
   showToggle = true,
   monthlyLabel = 'Monthly',
   yearlyLabel = 'Yearly',
@@ -17,6 +77,39 @@ const PricingTable = ({
   className = '',
 }) => {
   const [billingPeriod, setBillingPeriod] = useState('monthly');
+  const [livePlans, setLivePlans] = useState(null);
+
+  // Pull apiUrl from StrapiContext if available. Outside a provider, useStrapi
+  // throws — guard so storybook / standalone usage still works.
+  let apiUrl;
+  try { ({ apiUrl } = useStrapi() || {}); } catch (_) { apiUrl = null; }
+
+  const shouldFetchLive = staticPlans.length === 0 && !!apiUrl;
+
+  useEffect(() => {
+    if (!shouldFetchLive) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`${apiUrl}/api/stripe/prices`);
+        if (!res.ok) return;
+        const body = await res.json();
+        if (cancelled) return;
+        if (body?.configured && Array.isArray(body.prices)) {
+          const mapped = body.prices
+            .map(mapStripePriceToCard)
+            .sort((a, b) => a.sortOrder - b.sortOrder);
+          setLivePlans(mapped);
+        }
+      } catch (_) {
+        // Fail closed — leave livePlans null so the grid renders empty.
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [shouldFetchLive, apiUrl]);
+
+  // Resolution order: static plans (when provided) → live Stripe plans → empty.
+  const plans = staticPlans.length > 0 ? staticPlans : (livePlans || []);
 
   // Auto-detect if toggle is useful: only show if plans use monthlyPrice/yearlyPrice
   const hasLegacyPricing = plans.some(p => p.monthlyPrice != null || p.yearlyPrice != null);

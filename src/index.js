@@ -34595,13 +34595,351 @@ var ImageGallery = function ImageGallery(_ref) {
 };
 
 /**
- * Pricing Table Section Component
+ * Strapi Context - Provides Strapi configuration and site-scoped data fetching.
+ *
+ * siteSlug scopes ALL queries to a specific site. This is what makes the same
+ * component library work for multiple websites — each site sets its own slug
+ * and only sees its own content from a shared Strapi instance.
+ */
+var StrapiContext = /*#__PURE__*/React.createContext(null);
+var StrapiProvider = function StrapiProvider(_ref) {
+  var children = _ref.children,
+    apiUrl = _ref.apiUrl,
+    _ref$apiToken = _ref.apiToken,
+    apiToken = _ref$apiToken === void 0 ? null : _ref$apiToken,
+    _ref$siteSlug = _ref.siteSlug,
+    siteSlug = _ref$siteSlug === void 0 ? null : _ref$siteSlug,
+    _ref$cacheTime = _ref.cacheTime,
+    cacheTime = _ref$cacheTime === void 0 ? 60000 : _ref$cacheTime;
+  var _useState = React.useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    cache = _useState2[0],
+    setCache = _useState2[1];
+
+  /**
+   * Fetch data from Strapi API with caching
+   */
+  var fetchFromStrapi = React.useCallback(/*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(endpoint) {
+      var options,
+        cacheKey,
+        now,
+        headers,
+        response,
+        data,
+        _args = arguments;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+            cacheKey = "".concat(siteSlug || '', ":").concat(endpoint, ":").concat(JSON.stringify(options));
+            now = Date.now(); // Check cache
+            if (!(cache[cacheKey] && now - cache[cacheKey].timestamp < cacheTime)) {
+              _context.n = 1;
+              break;
+            }
+            return _context.a(2, cache[cacheKey].data);
+          case 1:
+            headers = {
+              'Content-Type': 'application/json'
+            };
+            if (apiToken) {
+              headers['Authorization'] = "Bearer ".concat(apiToken);
+            }
+            _context.n = 2;
+            return fetch("".concat(apiUrl, "/api/").concat(endpoint), _objectSpread2({
+              headers: headers
+            }, options));
+          case 2:
+            response = _context.v;
+            if (response.ok) {
+              _context.n = 3;
+              break;
+            }
+            throw new Error("Strapi API error: ".concat(response.status));
+          case 3:
+            _context.n = 4;
+            return response.json();
+          case 4:
+            data = _context.v;
+            // Update cache
+            setCache(function (prev) {
+              return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, cacheKey, {
+                data: data,
+                timestamp: now
+              }));
+            });
+            return _context.a(2, data);
+        }
+      }, _callee);
+    }));
+    return function (_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }(), [apiUrl, apiToken, siteSlug, cacheTime, cache]);
+
+  /**
+   * Fetch a page by its pageType enum, scoped to the current site.
+   *
+   * Query:
+   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=vaadhlabs
+   *       &populate[layout][populate]=*&populate[metadata]=*
+   */
+  var fetchPage = React.useCallback(/*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(pageType) {
+      var _data$data;
+      var endpoint, data;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            endpoint = "pages?filters[pageType][$eq]=".concat(pageType);
+            if (siteSlug) {
+              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+            }
+            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
+            _context2.n = 1;
+            return fetchFromStrapi(endpoint);
+          case 1:
+            data = _context2.v;
+            return _context2.a(2, (data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data[0]) || null);
+        }
+      }, _callee2);
+    }));
+    return function (_x2) {
+      return _ref3.apply(this, arguments);
+    };
+  }(), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch a custom page by its customSlug, scoped to the current site.
+   */
+  var fetchCustomPage = React.useCallback(/*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(slug) {
+      var _data$data2;
+      var endpoint, data;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.n) {
+          case 0:
+            endpoint = "pages?filters[pageType][$eq]=custom&filters[customSlug][$eq]=".concat(slug);
+            if (siteSlug) {
+              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+            }
+            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
+            _context3.n = 1;
+            return fetchFromStrapi(endpoint);
+          case 1:
+            data = _context3.v;
+            return _context3.a(2, (data === null || data === void 0 || (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2[0]) || null);
+        }
+      }, _callee3);
+    }));
+    return function (_x3) {
+      return _ref4.apply(this, arguments);
+    };
+  }(), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch all pages for the current site (navigation/sitemap).
+   */
+  var fetchAllPages = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    var endpoint, data;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.n) {
+        case 0:
+          endpoint = 'pages?fields[0]=title&fields[1]=pageType&fields[2]=customSlug&fields[3]=isActive&sort=title:asc';
+          if (siteSlug) {
+            endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+          }
+          _context4.n = 1;
+          return fetchFromStrapi(endpoint);
+        case 1:
+          data = _context4.v;
+          return _context4.a(2, (data === null || data === void 0 ? void 0 : data.data) || []);
+      }
+    }, _callee4);
+  })), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch site configuration (branding, navigation, footer, integrations, emailConfig).
+   */
+  var fetchSiteConfig = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+    var _data$data3;
+    var endpoint, data;
+    return _regenerator().w(function (_context5) {
+      while (1) switch (_context5.n) {
+        case 0:
+          if (siteSlug) {
+            _context5.n = 1;
+            break;
+          }
+          return _context5.a(2, null);
+        case 1:
+          endpoint = "sites?filters[slug][$eq]=".concat(siteSlug) + '&populate[brandColors]=*' + '&populate[navigation]=*' + '&populate[footer][populate]=columns.links' + '&populate[integrations]=*' + '&populate[emailConfig]=*';
+          _context5.n = 2;
+          return fetchFromStrapi(endpoint);
+        case 2:
+          data = _context5.v;
+          return _context5.a(2, (data === null || data === void 0 || (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3[0]) || null);
+      }
+    }, _callee5);
+  })), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Submit a form (contact, lead, demo, newsletter, support).
+   *
+   * Uses the custom public endpoint:
+   *   POST /api/form-submissions/submit
+   */
+  var submitForm = React.useCallback(/*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(formData) {
+      var response, _error$error, error;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
+          case 0:
+            _context6.n = 1;
+            return fetch("".concat(apiUrl, "/api/form-submissions/submit"), {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(_objectSpread2(_objectSpread2({}, formData), {}, {
+                siteSlug: siteSlug
+              }))
+            });
+          case 1:
+            response = _context6.v;
+            if (response.ok) {
+              _context6.n = 3;
+              break;
+            }
+            _context6.n = 2;
+            return response.json()["catch"](function () {
+              return {};
+            });
+          case 2:
+            error = _context6.v;
+            throw new Error((error === null || error === void 0 || (_error$error = error.error) === null || _error$error === void 0 ? void 0 : _error$error.message) || "Submission failed: ".concat(response.status));
+          case 3:
+            return _context6.a(2, response.json());
+        }
+      }, _callee6);
+    }));
+    return function (_x4) {
+      return _ref7.apply(this, arguments);
+    };
+  }(), [apiUrl, siteSlug]);
+
+  /**
+   * Clear cache
+   */
+  var clearCache = React.useCallback(function () {
+    var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    if (endpoint) {
+      setCache(function (prev) {
+        var newCache = _objectSpread2({}, prev);
+        Object.keys(newCache).forEach(function (key) {
+          if (key.includes(endpoint)) {
+            delete newCache[key];
+          }
+        });
+        return newCache;
+      });
+    } else {
+      setCache({});
+    }
+  }, []);
+  var value = {
+    apiUrl: apiUrl,
+    siteSlug: siteSlug,
+    fetchFromStrapi: fetchFromStrapi,
+    fetchPage: fetchPage,
+    fetchCustomPage: fetchCustomPage,
+    fetchAllPages: fetchAllPages,
+    fetchSiteConfig: fetchSiteConfig,
+    submitForm: submitForm,
+    clearCache: clearCache
+  };
+  return /*#__PURE__*/React.createElement(StrapiContext.Provider, {
+    value: value
+  }, children);
+};
+var useStrapi = function useStrapi() {
+  var context = React.useContext(StrapiContext);
+  if (!context) {
+    throw new Error('useStrapi must be used within a StrapiProvider');
+  }
+  return context;
+};
+
+/**
+ * Map a Stripe price (as shaped by Strapi's /api/stripe/prices) into the
+ * PricingCard prop shape. Stripe is the source of truth — Strapi proxies +
+ * caches the call, the marketing site renders whatever Stripe says.
+ *
+ * Display rules:
+ *   - contactSales=true        → "Contact us" (no period suffix)
+ *   - unitAmount===0           → "$0" + /interval (e.g. Free tier)
+ *   - else                     → "$<amount>" + /interval
+ */
+var mapStripePriceToCard = function mapStripePriceToCard(price) {
+  var unitDollars = price.unitAmount != null ? price.unitAmount / 100 : null;
+  var period = price.interval && price.interval !== 'one_time' ? "/ ".concat(price.interval) : '';
+  var displayPrice;
+  var displayPeriod;
+  if (price.contactSales) {
+    displayPrice = 'Contact us';
+    displayPeriod = '';
+  } else if (unitDollars === 0) {
+    displayPrice = '$0';
+    displayPeriod = period;
+  } else if (unitDollars != null) {
+    displayPrice = "$".concat(unitDollars.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }));
+    displayPeriod = period;
+  } else {
+    displayPrice = '';
+    displayPeriod = '';
+  }
+  return {
+    id: price.id,
+    name: price.name,
+    description: price.description || '',
+    price: displayPrice,
+    period: displayPeriod,
+    features: price.features || [],
+    cta: {
+      text: price.ctaText || 'Get started',
+      link: price.ctaLink || '/contact',
+      style: price.popular ? 'secondary' : 'primary'
+    },
+    highlighted: !!price.popular,
+    badge: price.popular ? 'Most popular' : '',
+    sortOrder: price.sortOrder || 0
+  };
+};
+
+/**
+ * Pricing Table Section Component.
+ *
+ * Two modes:
+ *   1. Static — pass `plans` from Strapi or any other source. Renders as-is.
+ *   2. Stripe-live — when `plans` is empty AND apiUrl is in StrapiContext,
+ *      fetches /api/stripe/prices and renders the live Stripe Products.
+ *      Stripe is then the single source of truth — edit the Product /
+ *      metadata in Stripe Dashboard and the marketing site reflects within
+ *      the cache TTL (60s strapi cache + browser cache-control).
+ *
+ * On fetch failure, falls back to whatever static `plans` were passed
+ * (empty list → empty grid, which is acceptable degradation for a pricing
+ * page).
  */
 var PricingTable = function PricingTable(_ref) {
   var title = _ref.title,
     subtitle = _ref.subtitle,
     _ref$plans = _ref.plans,
-    plans = _ref$plans === void 0 ? [] : _ref$plans,
+    staticPlans = _ref$plans === void 0 ? [] : _ref$plans,
     _ref$showToggle = _ref.showToggle,
     showToggle = _ref$showToggle === void 0 ? true : _ref$showToggle,
     _ref$monthlyLabel = _ref.monthlyLabel,
@@ -34616,6 +34954,73 @@ var PricingTable = function PricingTable(_ref) {
     _useState2 = _slicedToArray(_useState, 2),
     billingPeriod = _useState2[0],
     setBillingPeriod = _useState2[1];
+  var _useState3 = React.useState(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    livePlans = _useState4[0],
+    setLivePlans = _useState4[1];
+
+  // Pull apiUrl from StrapiContext if available. Outside a provider, useStrapi
+  // throws — guard so storybook / standalone usage still works.
+  var apiUrl;
+  try {
+    var _ref2 = useStrapi() || {};
+    apiUrl = _ref2.apiUrl;
+  } catch (_) {
+    apiUrl = null;
+  }
+  var shouldFetchLive = staticPlans.length === 0 && !!apiUrl;
+  React.useEffect(function () {
+    if (!shouldFetchLive) return;
+    var cancelled = false;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var res, body, mapped;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            _context.p = 0;
+            _context.n = 1;
+            return fetch("".concat(apiUrl, "/api/stripe/prices"));
+          case 1:
+            res = _context.v;
+            if (res.ok) {
+              _context.n = 2;
+              break;
+            }
+            return _context.a(2);
+          case 2:
+            _context.n = 3;
+            return res.json();
+          case 3:
+            body = _context.v;
+            if (!cancelled) {
+              _context.n = 4;
+              break;
+            }
+            return _context.a(2);
+          case 4:
+            if (body !== null && body !== void 0 && body.configured && Array.isArray(body.prices)) {
+              mapped = body.prices.map(mapStripePriceToCard).sort(function (a, b) {
+                return a.sortOrder - b.sortOrder;
+              });
+              setLivePlans(mapped);
+            }
+            _context.n = 6;
+            break;
+          case 5:
+            _context.p = 5;
+            _context.v;
+          case 6:
+            return _context.a(2);
+        }
+      }, _callee, null, [[0, 5]]);
+    }))();
+    return function () {
+      cancelled = true;
+    };
+  }, [shouldFetchLive, apiUrl]);
+
+  // Resolution order: static plans (when provided) → live Stripe plans → empty.
+  var plans = staticPlans.length > 0 ? staticPlans : livePlans || [];
 
   // Auto-detect if toggle is useful: only show if plans use monthlyPrice/yearlyPrice
   var hasLegacyPricing = plans.some(function (p) {
@@ -34714,24 +35119,24 @@ var PricingTable = function PricingTable(_ref) {
  * Supports both legacy props (monthlyPrice, yearlyPrice, ctaButton, features as [{text,included}])
  * and Strapi props (price, period, cta, isPopular, features as string[])
  */
-var PricingCard = function PricingCard(_ref2) {
-  var name = _ref2.name,
-    description = _ref2.description,
-    monthlyPrice = _ref2.monthlyPrice,
-    yearlyPrice = _ref2.yearlyPrice,
-    strapiPrice = _ref2.price,
-    strapiPeriod = _ref2.period,
-    _ref2$currency = _ref2.currency,
-    currency = _ref2$currency === void 0 ? '$' : _ref2$currency,
-    billingPeriod = _ref2.billingPeriod,
-    _ref2$features = _ref2.features,
-    features = _ref2$features === void 0 ? [] : _ref2$features,
-    ctaButton = _ref2.ctaButton,
-    cta = _ref2.cta,
-    _ref2$highlighted = _ref2.highlighted,
-    highlighted = _ref2$highlighted === void 0 ? false : _ref2$highlighted,
-    isPopular = _ref2.isPopular,
-    badge = _ref2.badge;
+var PricingCard = function PricingCard(_ref4) {
+  var name = _ref4.name,
+    description = _ref4.description,
+    monthlyPrice = _ref4.monthlyPrice,
+    yearlyPrice = _ref4.yearlyPrice,
+    strapiPrice = _ref4.price,
+    strapiPeriod = _ref4.period,
+    _ref4$currency = _ref4.currency,
+    currency = _ref4$currency === void 0 ? '$' : _ref4$currency,
+    billingPeriod = _ref4.billingPeriod,
+    _ref4$features = _ref4.features,
+    features = _ref4$features === void 0 ? [] : _ref4$features,
+    ctaButton = _ref4.ctaButton,
+    cta = _ref4.cta,
+    _ref4$highlighted = _ref4.highlighted,
+    highlighted = _ref4$highlighted === void 0 ? false : _ref4$highlighted,
+    isPopular = _ref4.isPopular,
+    badge = _ref4.badge;
   // Resolve highlighted from either prop
   var isHighlighted = highlighted || isPopular || false;
 
@@ -66727,283 +67132,6 @@ var CustomHTML = function CustomHTML(_ref) {
       __html: html || ''
     }
   });
-};
-
-/**
- * Strapi Context - Provides Strapi configuration and site-scoped data fetching.
- *
- * siteSlug scopes ALL queries to a specific site. This is what makes the same
- * component library work for multiple websites — each site sets its own slug
- * and only sees its own content from a shared Strapi instance.
- */
-var StrapiContext = /*#__PURE__*/React.createContext(null);
-var StrapiProvider = function StrapiProvider(_ref) {
-  var children = _ref.children,
-    apiUrl = _ref.apiUrl,
-    _ref$apiToken = _ref.apiToken,
-    apiToken = _ref$apiToken === void 0 ? null : _ref$apiToken,
-    _ref$siteSlug = _ref.siteSlug,
-    siteSlug = _ref$siteSlug === void 0 ? null : _ref$siteSlug,
-    _ref$cacheTime = _ref.cacheTime,
-    cacheTime = _ref$cacheTime === void 0 ? 60000 : _ref$cacheTime;
-  var _useState = React.useState({}),
-    _useState2 = _slicedToArray(_useState, 2),
-    cache = _useState2[0],
-    setCache = _useState2[1];
-
-  /**
-   * Fetch data from Strapi API with caching
-   */
-  var fetchFromStrapi = React.useCallback(/*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(endpoint) {
-      var options,
-        cacheKey,
-        now,
-        headers,
-        response,
-        data,
-        _args = arguments;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
-          case 0:
-            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-            cacheKey = "".concat(siteSlug || '', ":").concat(endpoint, ":").concat(JSON.stringify(options));
-            now = Date.now(); // Check cache
-            if (!(cache[cacheKey] && now - cache[cacheKey].timestamp < cacheTime)) {
-              _context.n = 1;
-              break;
-            }
-            return _context.a(2, cache[cacheKey].data);
-          case 1:
-            headers = {
-              'Content-Type': 'application/json'
-            };
-            if (apiToken) {
-              headers['Authorization'] = "Bearer ".concat(apiToken);
-            }
-            _context.n = 2;
-            return fetch("".concat(apiUrl, "/api/").concat(endpoint), _objectSpread2({
-              headers: headers
-            }, options));
-          case 2:
-            response = _context.v;
-            if (response.ok) {
-              _context.n = 3;
-              break;
-            }
-            throw new Error("Strapi API error: ".concat(response.status));
-          case 3:
-            _context.n = 4;
-            return response.json();
-          case 4:
-            data = _context.v;
-            // Update cache
-            setCache(function (prev) {
-              return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, cacheKey, {
-                data: data,
-                timestamp: now
-              }));
-            });
-            return _context.a(2, data);
-        }
-      }, _callee);
-    }));
-    return function (_x) {
-      return _ref2.apply(this, arguments);
-    };
-  }(), [apiUrl, apiToken, siteSlug, cacheTime, cache]);
-
-  /**
-   * Fetch a page by its pageType enum, scoped to the current site.
-   *
-   * Query:
-   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=vaadhlabs
-   *       &populate[layout][populate]=*&populate[metadata]=*
-   */
-  var fetchPage = React.useCallback(/*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(pageType) {
-      var _data$data;
-      var endpoint, data;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.n) {
-          case 0:
-            endpoint = "pages?filters[pageType][$eq]=".concat(pageType);
-            if (siteSlug) {
-              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-            }
-            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
-            _context2.n = 1;
-            return fetchFromStrapi(endpoint);
-          case 1:
-            data = _context2.v;
-            return _context2.a(2, (data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data[0]) || null);
-        }
-      }, _callee2);
-    }));
-    return function (_x2) {
-      return _ref3.apply(this, arguments);
-    };
-  }(), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch a custom page by its customSlug, scoped to the current site.
-   */
-  var fetchCustomPage = React.useCallback(/*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(slug) {
-      var _data$data2;
-      var endpoint, data;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.n) {
-          case 0:
-            endpoint = "pages?filters[pageType][$eq]=custom&filters[customSlug][$eq]=".concat(slug);
-            if (siteSlug) {
-              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-            }
-            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
-            _context3.n = 1;
-            return fetchFromStrapi(endpoint);
-          case 1:
-            data = _context3.v;
-            return _context3.a(2, (data === null || data === void 0 || (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2[0]) || null);
-        }
-      }, _callee3);
-    }));
-    return function (_x3) {
-      return _ref4.apply(this, arguments);
-    };
-  }(), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch all pages for the current site (navigation/sitemap).
-   */
-  var fetchAllPages = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-    var endpoint, data;
-    return _regenerator().w(function (_context4) {
-      while (1) switch (_context4.n) {
-        case 0:
-          endpoint = 'pages?fields[0]=title&fields[1]=pageType&fields[2]=customSlug&fields[3]=isActive&sort=title:asc';
-          if (siteSlug) {
-            endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-          }
-          _context4.n = 1;
-          return fetchFromStrapi(endpoint);
-        case 1:
-          data = _context4.v;
-          return _context4.a(2, (data === null || data === void 0 ? void 0 : data.data) || []);
-      }
-    }, _callee4);
-  })), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch site configuration (branding, navigation, footer, integrations, emailConfig).
-   */
-  var fetchSiteConfig = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
-    var _data$data3;
-    var endpoint, data;
-    return _regenerator().w(function (_context5) {
-      while (1) switch (_context5.n) {
-        case 0:
-          if (siteSlug) {
-            _context5.n = 1;
-            break;
-          }
-          return _context5.a(2, null);
-        case 1:
-          endpoint = "sites?filters[slug][$eq]=".concat(siteSlug) + '&populate[brandColors]=*' + '&populate[navigation]=*' + '&populate[footer][populate]=columns.links' + '&populate[integrations]=*' + '&populate[emailConfig]=*';
-          _context5.n = 2;
-          return fetchFromStrapi(endpoint);
-        case 2:
-          data = _context5.v;
-          return _context5.a(2, (data === null || data === void 0 || (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3[0]) || null);
-      }
-    }, _callee5);
-  })), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Submit a form (contact, lead, demo, newsletter, support).
-   *
-   * Uses the custom public endpoint:
-   *   POST /api/form-submissions/submit
-   */
-  var submitForm = React.useCallback(/*#__PURE__*/function () {
-    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(formData) {
-      var response, _error$error, error;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.n) {
-          case 0:
-            _context6.n = 1;
-            return fetch("".concat(apiUrl, "/api/form-submissions/submit"), {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(_objectSpread2(_objectSpread2({}, formData), {}, {
-                siteSlug: siteSlug
-              }))
-            });
-          case 1:
-            response = _context6.v;
-            if (response.ok) {
-              _context6.n = 3;
-              break;
-            }
-            _context6.n = 2;
-            return response.json()["catch"](function () {
-              return {};
-            });
-          case 2:
-            error = _context6.v;
-            throw new Error((error === null || error === void 0 || (_error$error = error.error) === null || _error$error === void 0 ? void 0 : _error$error.message) || "Submission failed: ".concat(response.status));
-          case 3:
-            return _context6.a(2, response.json());
-        }
-      }, _callee6);
-    }));
-    return function (_x4) {
-      return _ref7.apply(this, arguments);
-    };
-  }(), [apiUrl, siteSlug]);
-
-  /**
-   * Clear cache
-   */
-  var clearCache = React.useCallback(function () {
-    var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    if (endpoint) {
-      setCache(function (prev) {
-        var newCache = _objectSpread2({}, prev);
-        Object.keys(newCache).forEach(function (key) {
-          if (key.includes(endpoint)) {
-            delete newCache[key];
-          }
-        });
-        return newCache;
-      });
-    } else {
-      setCache({});
-    }
-  }, []);
-  var value = {
-    apiUrl: apiUrl,
-    siteSlug: siteSlug,
-    fetchFromStrapi: fetchFromStrapi,
-    fetchPage: fetchPage,
-    fetchCustomPage: fetchCustomPage,
-    fetchAllPages: fetchAllPages,
-    fetchSiteConfig: fetchSiteConfig,
-    submitForm: submitForm,
-    clearCache: clearCache
-  };
-  return /*#__PURE__*/React.createElement(StrapiContext.Provider, {
-    value: value
-  }, children);
-};
-var useStrapi = function useStrapi() {
-  var context = React.useContext(StrapiContext);
-  if (!context) {
-    throw new Error('useStrapi must be used within a StrapiProvider');
-  }
-  return context;
 };
 
 /**
