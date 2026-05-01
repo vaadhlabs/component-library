@@ -43,7 +43,7 @@ A dynamic, Strapi-powered React component library for building pages from CMS co
 ## Installation
 
 ```bash
-npm install @gocloudera/component-library
+npm install @vaadhlabs/component-library
 ```
 
 ## Quick Start
@@ -51,7 +51,7 @@ npm install @gocloudera/component-library
 ### 1. Wrap your app with StrapiProvider
 
 ```jsx
-import { StrapiProvider } from '@gocloudera/component-library';
+import { StrapiProvider } from '@vaadhlabs/component-library';
 
 function App() {
   return (
@@ -68,7 +68,7 @@ function App() {
 ### 2. Render dynamic pages
 
 ```jsx
-import { usePage, PageRenderer } from '@gocloudera/component-library';
+import { usePage, PageRenderer } from '@vaadhlabs/component-library';
 
 function DynamicPage({ slug }) {
   const { page, loading, error } = usePage(slug);
@@ -86,7 +86,7 @@ function DynamicPage({ slug }) {
 ### 3. Use individual components
 
 ```jsx
-import { Hero, FeatureGrid, Button } from '@gocloudera/component-library';
+import { Hero, FeatureGrid, Button } from '@vaadhlabs/component-library';
 
 function CustomPage() {
   return (
@@ -147,7 +147,7 @@ function CustomPage() {
 ### Register Custom Components
 
 ```jsx
-import { registerComponent } from '@gocloudera/component-library';
+import { registerComponent } from '@vaadhlabs/component-library';
 
 // Register a custom component
 registerComponent('sections.custom-widget', MyCustomWidget);
@@ -156,7 +156,7 @@ registerComponent('sections.custom-widget', MyCustomWidget);
 ### Override Components
 
 ```jsx
-import { PageRenderer } from '@gocloudera/component-library';
+import { PageRenderer } from '@vaadhlabs/component-library';
 import MyCustomHero from './MyCustomHero';
 
 function Page({ page }) {
@@ -174,7 +174,7 @@ function Page({ page }) {
 ### Register Custom Form Fields
 
 ```jsx
-import { registerField } from '@gocloudera/component-library';
+import { registerField } from '@vaadhlabs/component-library';
 
 // Register a custom field type
 registerField('color', ColorPickerField);

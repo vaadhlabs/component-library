@@ -1,5 +1,5 @@
 {
-  "name": "@gocloudera/component-library",
+  "name": "@vaadhlabs/component-library",
   "version": "1.0.0",
   "description": "Dynamic component library for Strapi-powered pages",
   "main": "src/index.js",
