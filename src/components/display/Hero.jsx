@@ -13,6 +13,8 @@ import Button from '../forms/Button';
 const Hero = ({
   title,
   subtitle,
+  eyebrow = undefined,
+  trustLine = undefined,
   // Strapi props
   cta,
   secondaryCta,
@@ -90,7 +92,7 @@ const Hero = ({
     position: 'relative',
     zIndex: 1,
     textAlign: alignment,
-    maxWidth: '900px',
+    maxWidth: '760px',
     padding: '2rem',
   };
 
@@ -116,12 +118,27 @@ const Hero = ({
       )}
 
       <div className="hero-content" style={contentStyle}>
+        {eyebrow && (
+          <p style={{
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            fontSize: '0.78rem',
+            fontWeight: 600,
+            opacity: 0.85,
+            marginBottom: '1rem',
+            color: 'inherit',
+          }}>
+            {eyebrow}
+          </p>
+        )}
+
         {title && (
           <h1 style={{
             fontSize: 'clamp(2rem, 5vw, 4rem)',
             fontWeight: 700,
-            marginBottom: '1rem',
-            lineHeight: 1.2,
+            marginBottom: '1.25rem',
+            lineHeight: 1.15,
+            letterSpacing: '-0.02em',
           }}>
             {title}
           </h1>
@@ -129,10 +146,10 @@ const Hero = ({
 
         {subtitle && (
           <p style={{
-            fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-            opacity: 0.9,
-            marginBottom: '2rem',
-            lineHeight: 1.6,
+            fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+            opacity: 0.88,
+            marginBottom: '1.75rem',
+            lineHeight: 1.55,
           }}>
             {subtitle}
           </p>
@@ -160,6 +177,18 @@ const Hero = ({
               />
             )}
           </div>
+        )}
+
+        {trustLine && (
+          <p style={{
+            marginTop: '1.5rem',
+            fontSize: '0.85rem',
+            opacity: 0.75,
+            lineHeight: 1.5,
+            textAlign: alignment,
+          }}>
+            {trustLine}
+          </p>
         )}
       </div>
     </section>

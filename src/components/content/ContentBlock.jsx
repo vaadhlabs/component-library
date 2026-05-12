@@ -14,6 +14,7 @@ import rehypeRaw from 'rehype-raw';
 const ContentBlock = ({
   title,
   heading,
+  eyebrow,
   content,
   body, // legacy alias from older seed scripts; treated as `content`
   backgroundColor = '#ffffff',
@@ -54,11 +55,26 @@ const ContentBlock = ({
   return (
     <section className={clsx('content-block-section', className)} style={containerStyle}>
       <div style={contentStyle}>
+        {eyebrow && (
+          <span style={{
+            display: 'block',
+            textTransform: 'uppercase',
+            letterSpacing: '0.12em',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            color: '#64748b',
+            marginBottom: '0.75rem',
+          }}>
+            {eyebrow}
+          </span>
+        )}
         {resolvedTitle && (
           <h2 style={{
-            fontSize: '2rem',
-            marginBottom: '1.5rem',
+            fontSize: '1.875rem',
+            marginBottom: '1.25rem',
             fontWeight: 700,
+            lineHeight: 1.25,
+            letterSpacing: '-0.015em',
           }}>
             {resolvedTitle}
           </h2>
@@ -67,8 +83,8 @@ const ContentBlock = ({
         <div
           className="content-body"
           style={{
-            lineHeight: 1.8,
-            fontSize: '1.1rem',
+            lineHeight: 1.7,
+            fontSize: '1.05rem',
           }}
         >
           <ReactMarkdown rehypePlugins={[rehypeRaw]}>

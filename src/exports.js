@@ -5,6 +5,13 @@
 
 // Display components
 export { default as Hero } from './components/display/Hero';
+export { default as StatsStrip } from './components/display/StatsStrip';
+export { default as Proof } from './components/display/Proof';
+export { default as Guarantee } from './components/display/Guarantee';
+export { default as LogosStrip } from './components/display/LogosStrip';
+export { default as Comparison } from './components/display/Comparison';
+export { default as PilotFindings } from './components/display/PilotFindings';
+export { default as ProductScreenshot } from './components/display/ProductScreenshot';
 export { default as CTABanner } from './components/display/CTABanner';
 export { default as FAQAccordion } from './components/display/FAQAccordion';
 export { default as FeatureGrid } from './components/display/FeatureGrid';

@@ -16,6 +16,13 @@ import StatsCounter from '../components/display/StatsCounter';
 import Timeline from '../components/display/Timeline';
 import TabsSection from '../components/display/TabsSection';
 import CustomHTML from '../components/content/CustomHTML';
+import StatsStrip from '../components/display/StatsStrip';
+import Proof from '../components/display/Proof';
+import Guarantee from '../components/display/Guarantee';
+import LogosStrip from '../components/display/LogosStrip';
+import Comparison from '../components/display/Comparison';
+import PilotFindings from '../components/display/PilotFindings';
+import ProductScreenshot from '../components/display/ProductScreenshot';
 
 /**
  * Component Registry - Maps Strapi component names to React components.
@@ -44,6 +51,13 @@ const COMPONENT_REGISTRY = {
   'layout.timeline': Timeline,
   'layout.tabs-section': TabsSection,
   'layout.custom-html': CustomHTML,
+  'layout.stats-strip': StatsStrip,
+  'layout.proof': Proof,
+  'layout.guarantee': Guarantee,
+  'layout.logos-strip': LogosStrip,
+  'layout.comparison': Comparison,
+  'layout.pilot-findings': PilotFindings,
+  'layout.product-screenshot': ProductScreenshot,
 
   // Legacy: sections.* — backward compatibility
   'sections.hero': Hero,
@@ -61,6 +75,13 @@ const COMPONENT_REGISTRY = {
   'sections.timeline': Timeline,
   'sections.tabs-section': TabsSection,
   'sections.custom-html': CustomHTML,
+  'sections.stats-strip': StatsStrip,
+  'sections.proof': Proof,
+  'sections.guarantee': Guarantee,
+  'sections.logos-strip': LogosStrip,
+  'sections.comparison': Comparison,
+  'sections.pilot-findings': PilotFindings,
+  'sections.product-screenshot': ProductScreenshot,
 };
 
 /**

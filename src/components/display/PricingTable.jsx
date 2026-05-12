@@ -150,7 +150,7 @@ const PricingTable = ({
               width: '56px',
               height: '28px',
               borderRadius: '14px',
-              background: '#4f46e5',
+              background: 'var(--gc-primary, #4f46e5)',
               border: 'none',
               cursor: 'pointer',
               position: 'relative',
@@ -255,13 +255,14 @@ const PricingCard = ({
   });
 
   const cardStyle = {
-    background: isHighlighted ? 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' : '#fff',
+    background: isHighlighted ? 'linear-gradient(135deg, var(--gc-gradient-from, #6366f1) 0%, var(--gc-gradient-to, #4f46e5) 100%)' : '#fff',
     color: isHighlighted ? '#fff' : '#1f2937',
     borderRadius: '16px',
     padding: '2rem',
+    border: isHighlighted ? undefined : '1px solid #e5e7eb',
     boxShadow: isHighlighted
-      ? '0 20px 40px rgba(79, 70, 229, 0.3)'
-      : '0 4px 20px rgba(0,0,0,0.08)',
+      ? '0 20px 40px var(--gc-primary-shadow, rgba(79, 70, 229, 0.3))'
+      : '0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.04)',
     position: 'relative',
     transform: isHighlighted ? 'scale(1.05)' : 'scale(1)',
     display: 'flex',
@@ -276,8 +277,8 @@ const PricingCard = ({
           top: '-12px',
           left: '50%',
           transform: 'translateX(-50%)',
-          background: isHighlighted ? '#fff' : '#4f46e5',
-          color: isHighlighted ? '#4f46e5' : '#fff',
+          background: isHighlighted ? '#fff' : 'var(--gc-primary, #4f46e5)',
+          color: isHighlighted ? 'var(--gc-primary, #4f46e5)' : '#fff',
           padding: '0.25rem 1rem',
           borderRadius: '20px',
           fontSize: '0.875rem',
@@ -338,7 +339,7 @@ const PricingCard = ({
           style={{
             width: '100%',
             background: isHighlighted ? '#fff' : undefined,
-            color: isHighlighted ? '#4f46e5' : undefined,
+            color: isHighlighted ? 'var(--gc-primary, #4f46e5)' : undefined,
           }}
         />
       )}
