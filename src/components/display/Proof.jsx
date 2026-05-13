@@ -23,7 +23,10 @@ const Proof = ({
     ...(variant === 'split'
       ? {
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
+          // auto-fit collapses to a single column when viewport < ~720px
+          // so the terminal block and copy stack instead of being squeezed
+          // into 150-px-wide columns on mobile.
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
           gap: '3rem',
           alignItems: 'center',
         }
@@ -56,11 +59,12 @@ const Proof = ({
   };
 
   const titleStyle = {
-    fontSize: '1.75rem',
+    fontSize: 'clamp(1.4rem, 4vw, 1.75rem)',
     fontWeight: 700,
     marginBottom: '0.75rem',
     letterSpacing: '-0.015em',
     color: '#f8fafc',
+    lineHeight: 1.2,
     margin: '0 0 0.75rem',
   };
 

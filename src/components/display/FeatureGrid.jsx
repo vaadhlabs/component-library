@@ -44,7 +44,9 @@ const FeatureGrid = ({
 
   const gridStyle = {
     display: 'grid',
-    gridTemplateColumns: `repeat(${colCount}, 1fr)`,
+    // auto-fit + min() collapses gracefully from the requested colCount on
+    // wide viewports all the way down to a single column on mobile.
+    gridTemplateColumns: `repeat(auto-fit, minmax(min(260px, 100%), 1fr))`,
     gap: '2rem',
     maxWidth: '1200px',
     margin: '0 auto',

@@ -149,8 +149,10 @@ const ProductScreenshot = ({
     ...(variant === 'split'
       ? {
           display: 'grid',
-          gridTemplateColumns: '1fr 1.2fr',
-          gap: '4rem',
+          // Collapses to single column on viewports below ~800px so the
+          // text block and screenshot stack instead of squeezing.
+          gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+          gap: '3rem',
           alignItems: 'center',
         }
       : {
