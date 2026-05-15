@@ -1,0 +1,2 @@
+# npm falls back to .gitignore when this file is absent, which would omit `dist/`.
+# Keep this file so published tarballs include the built output listed in package.json `files`.

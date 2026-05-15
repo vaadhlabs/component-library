@@ -2,15 +2,21 @@
   "name": "@vaadhlabs/component-library",
   "version": "1.0.0",
   "description": "Dynamic component library for Strapi-powered pages",
-  "main": "src/index.js",
-  "module": "src/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c",
+    "prepublishOnly": "npm run build",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --coverage --ci",
@@ -56,12 +62,12 @@
     "typescript": "^5.7.2"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "restricted"
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gocloudera/component-library.git"
+    "url": "git+https://github.com/gocloudera/component-library.git"
   },
   "keywords": [
     "react",

@@ -2,26 +2,22 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import { readFileSync } from 'fs';
 
-const pkg = JSON.parse(readFileSync('./package.json', 'utf8'));
-
-// Input is `src/exports.js` (the canonical export surface) — the build
-// emits to `src/index.js`, which is what `package.json#main` resolves to
-// for consumers. Without this, rollup would read its own previous bundle
-// as input, silently dropping any new exports added since the last
-// successful build.
+// Canonical entry — emits CommonJS + ESM bundles under `dist/` for npm and for
+// `website/scripts/link-component-library.js` (expects index.js + index.esm.js).
 export default {
   input: 'src/exports.js',
   output: [
     {
-      file: pkg.main,
+      file: 'dist/index.js',
       format: 'cjs',
+      exports: 'named',
       sourcemap: true,
     },
     {
-      file: pkg.module,
+      file: 'dist/index.esm.js',
       format: 'esm',
+      exports: 'named',
       sourcemap: true,
     },
   ],
