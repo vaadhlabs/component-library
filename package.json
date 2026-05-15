@@ -1,6 +1,6 @@
 {
   "name": "@vaadhlabs/component-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dynamic component library for Strapi-powered pages",
   "main": "./dist/index.js",
   "module": "./dist/index.esm.js",
