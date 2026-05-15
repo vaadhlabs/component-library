@@ -131,7 +131,7 @@ export const getPageMeta = (page) => {
   const meta = attrs.metadata || {};
   return {
     title: meta.title || attrs.metaTitle || attrs.title,
-    description: meta.description || attrs.metaDescription,
+    description: meta.description || attrs.metaDescription || attrs.description,
     keywords: meta.keywords || attrs.metaKeywords,
     ogImage: attrs.ogImage?.data?.attributes?.url,
   };

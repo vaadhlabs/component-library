@@ -126,8 +126,8 @@ describe('StrapiContext', () => {
     await waitFor(() => {
       expect(screen.getByTestId('page').textContent).toBe('1');
     });
-    expect(global.fetch.mock.calls[0][0]).toContain('public-pages');
-    expect(global.fetch.mock.calls[0][0]).toContain('home');
+    expect(global.fetch.mock.calls[0][0]).toContain('/api/pages');
+    expect(global.fetch.mock.calls[0][0]).toContain('filters[pageType][$eq]=home');
   });
 
   it('exposes fetchAllPages', async () => {

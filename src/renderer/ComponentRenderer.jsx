@@ -112,7 +112,7 @@ export const ComponentRenderer = ({
   const Component = componentOverrides[componentType] || COMPONENT_REGISTRY[componentType];
 
   if (!Component) {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'production') {
       console.warn(`Unknown component type: ${componentType}`);
       return (
         <div className="component-unknown" style={{

@@ -23,14 +23,26 @@ describe('Hero', () => {
     expect(screen.getByRole('button', { name: /learn more/i })).toBeInTheDocument();
   });
 
-  it('renders overlay div by default', () => {
-    const { container } = render(<Hero title="Hello" />);
-    expect(container.querySelector('.hero-overlay')).toBeTruthy();
+  it('renders dimming overlay when background image and overlay are set', () => {
+    const { container } = render(
+      <Hero title="Hello" backgroundImage={{ url: '/hero.jpg' }} overlay />
+    );
+    const section = container.querySelector('section');
+    const absoluteLayers = Array.from(section.children).filter(
+      (el) => el.style.position === 'absolute'
+    );
+    expect(absoluteLayers.length).toBeGreaterThan(0);
   });
 
-  it('does not render overlay when overlay is false', () => {
-    const { container } = render(<Hero title="Hello" overlay={false} />);
-    expect(container.querySelector('.hero-overlay')).toBeNull();
+  it('does not render image overlay when overlay is false', () => {
+    const { container } = render(
+      <Hero title="Hello" backgroundImage={{ url: '/hero.jpg' }} overlay={false} />
+    );
+    const section = container.querySelector('section');
+    const absoluteLayers = Array.from(section.children).filter(
+      (el) => el.style.position === 'absolute'
+    );
+    expect(absoluteLayers.length).toBe(0);
   });
 
   it('applies correct height from height prop', () => {

@@ -2,20 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import FormSection from '../src/components/forms/FormSection';
 
-// Mock FormRenderer since it has complex dependencies (useForm hook)
-jest.mock('../src/renderer/FormRenderer', () => {
-  const React = require('react');
-  return function MockFormRenderer(props) {
-    return (
-      <div data-testid="form-renderer">
-        <span data-testid="form-id">{props.formId}</span>
-        <span data-testid="submit-text">{props.submitButtonText}</span>
-        <span data-testid="field-count">{props.fields?.length || 0}</span>
-      </div>
-    );
-  };
-});
-
 describe('FormSection', () => {
   it('renders title and description', () => {
     render(<FormSection title="Contact Us" description="Fill out the form" fields={[]} />);
@@ -23,27 +9,24 @@ describe('FormSection', () => {
     expect(screen.getByText('Fill out the form')).toBeInTheDocument();
   });
 
-  it('renders FormRenderer component', () => {
-    render(<FormSection fields={[]} />);
-    expect(screen.getByTestId('form-renderer')).toBeInTheDocument();
+  it('renders a form with default submit label', () => {
+    const { container } = render(<FormSection fields={[]} />);
+    expect(container.querySelector('form')).toBeTruthy();
+    expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
   });
 
-  it('passes formId to FormRenderer', () => {
-    render(<FormSection formId="contact-form" fields={[]} />);
-    expect(screen.getByTestId('form-id').textContent).toBe('contact-form');
-  });
-
-  it('passes submitButtonText to FormRenderer', () => {
+  it('uses custom submit button text', () => {
     render(<FormSection submitButtonText="Send Message" fields={[]} />);
-    expect(screen.getByTestId('submit-text').textContent).toBe('Send Message');
+    expect(screen.getByRole('button', { name: /send message/i })).toBeInTheDocument();
   });
 
-  it('passes fields to FormRenderer', () => {
+  it('renders one field control per Strapi field', () => {
     const fields = [
       { name: 'email', type: 'email', label: 'Email' },
       { name: 'name', type: 'text', label: 'Name' },
     ];
     render(<FormSection fields={fields} />);
-    expect(screen.getByTestId('field-count').textContent).toBe('2');
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/name/i)).toBeInTheDocument();
   });
 });

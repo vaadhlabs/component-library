@@ -48,7 +48,6 @@ describe('PageRenderer', () => {
       id: 7,
       attributes: {
         title: 'About',
-        layout: 'wide',
         sections: [
           {
             id: 1,

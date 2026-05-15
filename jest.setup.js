@@ -1,5 +1,7 @@
 require('@testing-library/jest-dom');
 
+window.scrollTo = jest.fn();
+
 global.IntersectionObserver = class {
   constructor(cb) { this._cb = cb; }
   observe() {}
