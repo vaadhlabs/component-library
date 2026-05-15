@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import MarkdownRichText from '../content/MarkdownRichText';
 
 const dotStyle = (color) => ({
   width: '10px',
@@ -220,7 +221,7 @@ const ProductScreenshot = ({
         <div style={textColStyle}>
           {eyebrow && <span style={eyebrowStyle}>{eyebrow}</span>}
           {title && <h2 style={titleStyle}>{title}</h2>}
-          {body && <p style={bodyStyle}>{body}</p>}
+          {body && <MarkdownRichText style={bodyStyle}>{body}</MarkdownRichText>}
         </div>
 
         {/* Image column */}
@@ -232,7 +233,7 @@ const ProductScreenshot = ({
               <DashboardMockup />
             ) : null}
           </div>
-          {caption && <p style={captionStyle}>{caption}</p>}
+          {caption && <MarkdownRichText style={captionStyle}>{caption}</MarkdownRichText>}
         </div>
       </div>
     </section>

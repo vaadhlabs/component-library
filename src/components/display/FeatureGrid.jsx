@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import * as Icons from 'lucide-react';
+import MarkdownRichText from '../content/MarkdownRichText';
 
 // Maps the semantic lowercase icon names used by the marketing seed to their
 // PascalCase lucide-react export names. PascalCase names passed directly (e.g.
@@ -57,7 +58,11 @@ const FeatureGrid = ({
       {(title || subtitle) && (
         <div className="section-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
           {title && <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{title}</h2>}
-          {subtitle && <p style={{ fontSize: '1.2rem', opacity: 0.8 }}>{subtitle}</p>}
+          {subtitle && (
+            <MarkdownRichText style={{ fontSize: '1.2rem', opacity: 0.8 }}>
+              {subtitle}
+            </MarkdownRichText>
+          )}
         </div>
       )}
 
@@ -153,9 +158,27 @@ const FeatureCard = ({
       )}
 
       {description && (
-        <p style={{ color: '#666', lineHeight: 1.6, marginBottom: link ? '1rem' : 0 }}>
+        <MarkdownRichText
+          style={{
+            color: '#666',
+            lineHeight: 1.6,
+            marginBottom: link ? '1rem' : 0,
+          }}
+          components={{
+            a: ({ node, ...p }) => (
+              <a
+                {...p}
+                style={{ color: 'var(--gc-primary, #2563eb)', textDecoration: 'underline' }}
+                onClick={(e) => {
+                  if (typeof p.onClick === 'function') p.onClick(e);
+                  e.stopPropagation();
+                }}
+              />
+            ),
+          }}
+        >
           {description}
-        </p>
+        </MarkdownRichText>
       )}
 
       {link && (

@@ -1,7 +1,5 @@
-'use strict';
-
-var React = require('react');
-var jsxRuntime = require('react/jsx-runtime');
+import React, { forwardRef, createElement, useState, useCallback, useContext, createContext, useEffect, useRef, useMemo } from 'react';
+import { jsxs, jsx, Fragment } from 'react/jsx-runtime';
 
 function _arrayLikeToArray(r, a) {
   (null == a || a > r.length) && (a = r.length);
@@ -310,7 +308,7 @@ var defaultAttributes = {
  */
 
 
-const Icon = React.forwardRef(
+const Icon = forwardRef(
   ({
     color = "currentColor",
     size = 24,
@@ -321,7 +319,7 @@ const Icon = React.forwardRef(
     iconNode,
     ...rest
   }, ref) => {
-    return React.createElement(
+    return createElement(
       "svg",
       {
         ref,
@@ -334,7 +332,7 @@ const Icon = React.forwardRef(
         ...rest
       },
       [
-        ...iconNode.map(([tag, attrs]) => React.createElement(tag, attrs)),
+        ...iconNode.map(([tag, attrs]) => createElement(tag, attrs)),
         ...Array.isArray(children) ? children : [children]
       ]
     );
@@ -350,8 +348,8 @@ const Icon = React.forwardRef(
 
 
 const createLucideIcon = (iconName, iconNode) => {
-  const Component = React.forwardRef(
-    ({ className, ...props }, ref) => React.createElement(Icon, {
+  const Component = forwardRef(
+    ({ className, ...props }, ref) => createElement(Icon, {
       ref,
       iconNode,
       className: mergeClasses(`lucide-${toKebabCase(iconName)}`, className),
@@ -33932,6 +33930,10 @@ var Hero = function Hero(_ref) {
   var _backgroundImage$data;
   var title = _ref.title,
     subtitle = _ref.subtitle,
+    _ref$eyebrow = _ref.eyebrow,
+    eyebrow = _ref$eyebrow === void 0 ? undefined : _ref$eyebrow,
+    _ref$trustLine = _ref.trustLine,
+    trustLine = _ref$trustLine === void 0 ? undefined : _ref$trustLine,
     cta = _ref.cta,
     secondaryCta = _ref.secondaryCta,
     _ref$variant = _ref.variant,
@@ -34013,7 +34015,7 @@ var Hero = function Hero(_ref) {
     position: 'relative',
     zIndex: 1,
     textAlign: alignment,
-    maxWidth: '900px',
+    maxWidth: '760px',
     padding: '2rem'
   };
   return /*#__PURE__*/React.createElement("section", {
@@ -34047,19 +34049,30 @@ var Hero = function Hero(_ref) {
   }), /*#__PURE__*/React.createElement("div", {
     className: "hero-content",
     style: contentStyle
-  }, title && /*#__PURE__*/React.createElement("h1", {
+  }, eyebrow && /*#__PURE__*/React.createElement("p", {
+    style: {
+      textTransform: 'uppercase',
+      letterSpacing: '0.12em',
+      fontSize: '0.78rem',
+      fontWeight: 600,
+      opacity: 0.85,
+      marginBottom: '1rem',
+      color: 'inherit'
+    }
+  }, eyebrow), title && /*#__PURE__*/React.createElement("h1", {
     style: {
       fontSize: 'clamp(2rem, 5vw, 4rem)',
       fontWeight: 700,
-      marginBottom: '1rem',
-      lineHeight: 1.2
+      marginBottom: '1.25rem',
+      lineHeight: 1.15,
+      letterSpacing: '-0.02em'
     }
   }, title), subtitle && /*#__PURE__*/React.createElement("p", {
     style: {
-      fontSize: 'clamp(1rem, 2vw, 1.5rem)',
-      opacity: 0.9,
-      marginBottom: '2rem',
-      lineHeight: 1.6
+      fontSize: 'clamp(1rem, 1.6vw, 1.2rem)',
+      opacity: 0.88,
+      marginBottom: '1.75rem',
+      lineHeight: 1.55
     }
   }, subtitle), (resolvedPrimary || resolvedSecondary) && /*#__PURE__*/React.createElement("div", {
     style: {
@@ -34076,1359 +34089,100 @@ var Hero = function Hero(_ref) {
     text: resolvedSecondary.text || resolvedSecondary.label,
     link: resolvedSecondary.link || resolvedSecondary.href,
     variant: resolvedSecondary.style || 'outline'
-  }))));
+  })), trustLine && /*#__PURE__*/React.createElement("p", {
+    style: {
+      marginTop: '1.5rem',
+      fontSize: '0.85rem',
+      opacity: 0.75,
+      lineHeight: 1.5,
+      textAlign: alignment
+    }
+  }, trustLine)));
 };
 
-/**
- * CTA Banner Section Component
- */
-var CTABanner = function CTABanner(_ref) {
-  var title = _ref.title,
-    subtitle = _ref.subtitle,
-    _ref$backgroundColor = _ref.backgroundColor,
-    backgroundColor = _ref$backgroundColor === void 0 ? '#4f46e5' : _ref$backgroundColor,
-    gradientFrom = _ref.gradientFrom,
-    gradientTo = _ref.gradientTo,
-    _ref$textColor = _ref.textColor,
-    textColor = _ref$textColor === void 0 ? '#ffffff' : _ref$textColor,
-    button = _ref.button,
-    _ref$alignment = _ref.alignment,
-    alignment = _ref$alignment === void 0 ? 'center' : _ref$alignment,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var containerStyle = _objectSpread2(_objectSpread2({}, gradientFrom && gradientTo ? {
-    backgroundImage: "linear-gradient(135deg, ".concat(gradientFrom, ", ").concat(gradientTo, ")")
-  } : {
-    backgroundColor: backgroundColor
-  }), {}, {
-    color: textColor,
-    padding: '4rem 2rem',
-    textAlign: alignment
-  });
-  var contentStyle = {
-    maxWidth: '800px',
-    margin: alignment === 'center' ? '0 auto' : undefined
-  };
-  return /*#__PURE__*/React.createElement("section", {
-    className: clsx('cta-banner-section', className),
-    style: containerStyle
-  }, /*#__PURE__*/React.createElement("div", {
-    style: contentStyle
-  }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-      fontWeight: 700,
-      marginBottom: '0.5rem'
-    }
-  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      opacity: 0.9,
-      marginBottom: '2rem'
-    }
-  }, subtitle), button && /*#__PURE__*/React.createElement(Button, {
-    text: button.text,
-    link: button.link,
-    variant: button.style || button.variant || 'secondary'
-  })));
-};
-
-/**
- * FAQ Accordion Section Component
- */
-var FAQAccordion = function FAQAccordion(_ref) {
-  var title = _ref.title,
-    subtitle = _ref.subtitle,
-    _ref$items = _ref.items,
-    items = _ref$items === void 0 ? [] : _ref$items,
-    _ref$allowMultipleOpe = _ref.allowMultipleOpen,
-    allowMultipleOpen = _ref$allowMultipleOpe === void 0 ? false : _ref$allowMultipleOpe,
-    _ref$backgroundColor = _ref.backgroundColor,
-    backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(new Set()),
-    _useState2 = _slicedToArray(_useState, 2),
-    openItems = _useState2[0],
-    setOpenItems = _useState2[1];
-  var toggleItem = function toggleItem(index) {
-    setOpenItems(function (prev) {
-      var newSet = new Set(allowMultipleOpen ? prev : []);
-      if (prev.has(index)) {
-        newSet["delete"](index);
-      } else {
-        newSet.add(index);
-      }
-      return newSet;
-    });
-  };
-  var containerStyle = {
-    background: backgroundColor,
-    padding: '4rem 2rem'
-  };
-  return /*#__PURE__*/React.createElement("section", {
-    className: clsx('faq-accordion-section', className),
-    style: containerStyle
-  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
-    className: "section-header",
-    style: {
-      textAlign: 'center',
-      marginBottom: '3rem',
-      maxWidth: '800px',
-      margin: '0 auto 3rem'
-    }
-  }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: '2.5rem',
-      marginBottom: '0.5rem'
-    }
-  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      opacity: 0.8
-    }
-  }, subtitle)), /*#__PURE__*/React.createElement("div", {
-    className: "faq-list",
-    style: {
-      maxWidth: '800px',
-      margin: '0 auto'
-    }
-  }, items.map(function (item, index) {
-    return /*#__PURE__*/React.createElement(FAQItem, {
-      key: item.id || index,
-      question: item.question,
-      answer: item.answer,
-      isOpen: openItems.has(index),
-      onToggle: function onToggle() {
-        return toggleItem(index);
-      }
-    });
-  })));
-};
-
-/**
- * FAQ Item Component
- */
-var FAQItem = function FAQItem(_ref2) {
-  var question = _ref2.question,
-    answer = _ref2.answer,
-    isOpen = _ref2.isOpen,
-    onToggle = _ref2.onToggle;
-  return /*#__PURE__*/React.createElement("div", {
-    className: "faq-item",
-    style: {
-      borderBottom: '1px solid #e5e7eb',
-      marginBottom: '0.5rem'
-    }
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: onToggle,
-    style: {
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: '1.5rem 0',
-      background: 'none',
-      border: 'none',
-      cursor: 'pointer',
-      textAlign: 'left',
-      fontSize: '1.1rem',
-      fontWeight: 600,
-      color: '#1f2937'
-    }
-  }, /*#__PURE__*/React.createElement("span", null, question), /*#__PURE__*/React.createElement(ChevronDown, {
-    size: 20,
-    style: {
-      transition: 'transform 0.2s',
-      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-      flexShrink: 0,
-      marginLeft: '1rem'
-    }
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      overflow: 'hidden',
-      maxHeight: isOpen ? '1000px' : '0',
-      transition: 'max-height 0.3s ease-out'
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    style: {
-      paddingBottom: '1.5rem',
-      color: '#4b5563',
-      lineHeight: 1.7
-    },
-    dangerouslySetInnerHTML: {
-      __html: answer
-    }
-  })));
-};
-
-/**
- * Feature Grid Section Component
- */
-var FeatureGrid = function FeatureGrid(_ref) {
-  var title = _ref.title,
-    subtitle = _ref.subtitle,
-    _ref$columns = _ref.columns,
-    columns = _ref$columns === void 0 ? '3' : _ref$columns,
-    _ref$features = _ref.features,
-    features = _ref$features === void 0 ? [] : _ref$features,
-    _ref$backgroundColor = _ref.backgroundColor,
-    backgroundColor = _ref$backgroundColor === void 0 ? '#f8f9fa' : _ref$backgroundColor,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var colCount = parseInt(columns, 10);
-  var containerStyle = {
-    background: backgroundColor,
-    padding: '4rem 2rem'
-  };
-  var gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: "repeat(".concat(colCount, ", 1fr)"),
-    gap: '2rem',
-    maxWidth: '1200px',
-    margin: '0 auto'
-  };
-  return /*#__PURE__*/React.createElement("section", {
-    className: clsx('feature-grid-section', className),
-    style: containerStyle
-  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
-    className: "section-header",
-    style: {
-      textAlign: 'center',
-      marginBottom: '3rem'
-    }
-  }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: '2.5rem',
-      marginBottom: '0.5rem'
-    }
-  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      opacity: 0.8
-    }
-  }, subtitle)), /*#__PURE__*/React.createElement("div", {
-    className: "feature-grid",
-    style: gridStyle
-  }, features.map(function (feature, index) {
-    return /*#__PURE__*/React.createElement(FeatureCard, _extends({
-      key: feature.id || index
-    }, feature));
-  })));
-};
-
-/**
- * Feature Card Component
- */
-var FeatureCard = function FeatureCard(_ref2) {
-  var _image$data;
-  var title = _ref2.title,
-    description = _ref2.description,
-    icon = _ref2.icon,
-    image = _ref2.image,
-    link = _ref2.link,
-    _ref2$linkText = _ref2.linkText,
-    linkText = _ref2$linkText === void 0 ? 'Learn more' : _ref2$linkText;
-  var imageUrl = (image === null || image === void 0 || (_image$data = image.data) === null || _image$data === void 0 || (_image$data = _image$data.attributes) === null || _image$data === void 0 ? void 0 : _image$data.url) || (image === null || image === void 0 ? void 0 : image.url);
-  var IconComponent = icon && Icons[icon];
-  var cardStyle = {
-    background: '#ffffff',
-    borderRadius: '12px',
-    padding: '2rem',
-    boxShadow: '0 4px 6px rgba(0,0,0,0.05)',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-    cursor: link ? 'pointer' : 'default'
-  };
-  var handleClick = function handleClick() {
-    if (link) {
-      window.location.href = link;
-    }
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "feature-card",
-    style: cardStyle,
-    onClick: handleClick,
-    onMouseEnter: function onMouseEnter(e) {
-      e.currentTarget.style.transform = 'translateY(-4px)';
-      e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.1)';
-    },
-    onMouseLeave: function onMouseLeave(e) {
-      e.currentTarget.style.transform = 'translateY(0)';
-      e.currentTarget.style.boxShadow = '0 4px 6px rgba(0,0,0,0.05)';
-    }
-  }, imageUrl && /*#__PURE__*/React.createElement("img", {
-    src: imageUrl,
-    alt: title,
-    style: {
-      width: '100%',
-      height: '150px',
-      objectFit: 'cover',
-      borderRadius: '8px',
-      marginBottom: '1rem'
-    }
-  }), IconComponent && !imageUrl && /*#__PURE__*/React.createElement("div", {
-    style: {
-      width: '60px',
-      height: '60px',
-      borderRadius: '12px',
-      background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement(IconComponent, {
-    size: 28,
-    color: "#fff"
-  })), title && /*#__PURE__*/React.createElement("h3", {
-    style: {
-      fontSize: '1.25rem',
-      marginBottom: '0.5rem',
-      fontWeight: 600
-    }
-  }, title), description && /*#__PURE__*/React.createElement("p", {
-    style: {
-      color: '#666',
-      lineHeight: 1.6,
-      marginBottom: link ? '1rem' : 0
-    }
-  }, description), link && /*#__PURE__*/React.createElement("a", {
-    href: link,
-    style: {
-      color: '#4f46e5',
-      textDecoration: 'none',
-      fontWeight: 500,
-      display: 'inline-flex',
-      alignItems: 'center',
-      gap: '0.5rem'
-    },
-    onClick: function onClick(e) {
-      return e.stopPropagation();
-    }
-  }, linkText, " \u2192"));
-};
-
-/**
- * Image Gallery Section Component
- */
-var ImageGallery = function ImageGallery(_ref) {
-  var _images$data, _images$map, _imageList$currentInd, _imageList$currentInd2;
-  var title = _ref.title,
-    _ref$images = _ref.images,
-    images = _ref$images === void 0 ? [] : _ref$images,
-    _ref$columns = _ref.columns,
-    columns = _ref$columns === void 0 ? '3' : _ref$columns,
-    _ref$enableLightbox = _ref.enableLightbox,
-    enableLightbox = _ref$enableLightbox === void 0 ? true : _ref$enableLightbox,
-    _ref$aspectRatio = _ref.aspectRatio,
-    aspectRatio = _ref$aspectRatio === void 0 ? 'square' : _ref$aspectRatio,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(false),
-    _useState2 = _slicedToArray(_useState, 2),
-    lightboxOpen = _useState2[0],
-    setLightboxOpen = _useState2[1];
-  var _useState3 = React.useState(0),
-    _useState4 = _slicedToArray(_useState3, 2),
-    currentIndex = _useState4[0],
-    setCurrentIndex = _useState4[1];
-  var colCount = parseInt(columns, 10);
-  var aspectRatioMap = {
-    square: '1 / 1',
-    portrait: '3 / 4',
-    landscape: '16 / 9',
-    auto: 'auto'
-  };
-
-  // Handle both array of media objects and direct URLs
-  var imageList = (images === null || images === void 0 || (_images$data = images.data) === null || _images$data === void 0 ? void 0 : _images$data.map(function (img) {
-    var _img$attributes, _img$attributes2;
-    return {
-      url: ((_img$attributes = img.attributes) === null || _img$attributes === void 0 ? void 0 : _img$attributes.url) || img.url,
-      alt: ((_img$attributes2 = img.attributes) === null || _img$attributes2 === void 0 ? void 0 : _img$attributes2.alternativeText) || img.alternativeText || ''
-    };
-  })) || ((_images$map = images.map) === null || _images$map === void 0 ? void 0 : _images$map.call(images, function (img) {
-    return {
-      url: img.url || img,
-      alt: img.alt || ''
-    };
-  })) || [];
-  var openLightbox = function openLightbox(index) {
-    if (enableLightbox) {
-      setCurrentIndex(index);
-      setLightboxOpen(true);
-    }
-  };
-  var closeLightbox = function closeLightbox() {
-    return setLightboxOpen(false);
-  };
-  var nextImage = function nextImage() {
-    return setCurrentIndex(function (prev) {
-      return (prev + 1) % imageList.length;
-    });
-  };
-  var prevImage = function prevImage() {
-    return setCurrentIndex(function (prev) {
-      return (prev - 1 + imageList.length) % imageList.length;
-    });
-  };
-  return /*#__PURE__*/React.createElement("section", {
-    className: clsx('image-gallery-section', className),
-    style: {
-      padding: '4rem 2rem'
-    }
-  }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      textAlign: 'center',
-      fontSize: '2.5rem',
-      marginBottom: '2rem'
-    }
-  }, title), /*#__PURE__*/React.createElement("div", {
-    className: "gallery-grid",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: "repeat(".concat(colCount, ", 1fr)"),
-      gap: '1rem',
-      maxWidth: '1200px',
-      margin: '0 auto'
-    }
-  }, imageList.map(function (image, index) {
-    return /*#__PURE__*/React.createElement("div", {
-      key: index,
-      onClick: function onClick() {
-        return openLightbox(index);
-      },
-      style: {
-        aspectRatio: aspectRatioMap[aspectRatio],
-        overflow: 'hidden',
-        borderRadius: '8px',
-        cursor: enableLightbox ? 'pointer' : 'default',
-        transition: 'transform 0.2s'
-      },
-      onMouseEnter: function onMouseEnter(e) {
-        if (enableLightbox) e.currentTarget.style.transform = 'scale(1.02)';
-      },
-      onMouseLeave: function onMouseLeave(e) {
-        e.currentTarget.style.transform = 'scale(1)';
-      }
-    }, /*#__PURE__*/React.createElement("img", {
-      src: image.url,
-      alt: image.alt,
-      style: {
-        width: '100%',
-        height: '100%',
-        objectFit: 'cover'
-      }
-    }));
-  })), lightboxOpen && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: 'rgba(0,0,0,0.95)',
-      zIndex: 9999,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    onClick: closeLightbox
-  }, /*#__PURE__*/React.createElement("button", {
-    onClick: closeLightbox,
-    style: {
-      position: 'absolute',
-      top: '1rem',
-      right: '1rem',
-      background: 'transparent',
-      border: 'none',
-      color: '#fff',
-      cursor: 'pointer',
-      padding: '0.5rem'
-    }
-  }, /*#__PURE__*/React.createElement(X, {
-    size: 32
-  })), imageList.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
-    onClick: function onClick(e) {
-      e.stopPropagation();
-      prevImage();
-    },
-    style: {
-      position: 'absolute',
-      left: '1rem',
-      background: 'transparent',
-      border: 'none',
-      color: '#fff',
-      cursor: 'pointer',
-      padding: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement(ChevronLeft, {
-    size: 40
-  })), /*#__PURE__*/React.createElement("button", {
-    onClick: function onClick(e) {
-      e.stopPropagation();
-      nextImage();
-    },
-    style: {
-      position: 'absolute',
-      right: '1rem',
-      background: 'transparent',
-      border: 'none',
-      color: '#fff',
-      cursor: 'pointer',
-      padding: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement(ChevronRight, {
-    size: 40
-  }))), /*#__PURE__*/React.createElement("img", {
-    src: (_imageList$currentInd = imageList[currentIndex]) === null || _imageList$currentInd === void 0 ? void 0 : _imageList$currentInd.url,
-    alt: (_imageList$currentInd2 = imageList[currentIndex]) === null || _imageList$currentInd2 === void 0 ? void 0 : _imageList$currentInd2.alt,
-    onClick: function onClick(e) {
-      return e.stopPropagation();
-    },
-    style: {
-      maxWidth: '90vw',
-      maxHeight: '90vh',
-      objectFit: 'contain'
-    }
-  })));
-};
-
-/**
- * Strapi Context - Provides Strapi configuration and site-scoped data fetching.
- *
- * siteSlug scopes ALL queries to a specific site. This is what makes the same
- * component library work for multiple websites — each site sets its own slug
- * and only sees its own content from a shared Strapi instance.
- */
-var StrapiContext = /*#__PURE__*/React.createContext(null);
-var StrapiProvider = function StrapiProvider(_ref) {
-  var children = _ref.children,
-    apiUrl = _ref.apiUrl,
-    _ref$apiToken = _ref.apiToken,
-    apiToken = _ref$apiToken === void 0 ? null : _ref$apiToken,
-    _ref$siteSlug = _ref.siteSlug,
-    siteSlug = _ref$siteSlug === void 0 ? null : _ref$siteSlug,
-    _ref$cacheTime = _ref.cacheTime,
-    cacheTime = _ref$cacheTime === void 0 ? 60000 : _ref$cacheTime;
-  var _useState = React.useState({}),
-    _useState2 = _slicedToArray(_useState, 2),
-    cache = _useState2[0],
-    setCache = _useState2[1];
-
-  /**
-   * Fetch data from Strapi API with caching
-   */
-  var fetchFromStrapi = React.useCallback(/*#__PURE__*/function () {
-    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(endpoint) {
-      var options,
-        cacheKey,
-        now,
-        headers,
-        response,
-        data,
-        _args = arguments;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.n) {
-          case 0:
-            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
-            cacheKey = "".concat(siteSlug || '', ":").concat(endpoint, ":").concat(JSON.stringify(options));
-            now = Date.now(); // Check cache
-            if (!(cache[cacheKey] && now - cache[cacheKey].timestamp < cacheTime)) {
-              _context.n = 1;
-              break;
-            }
-            return _context.a(2, cache[cacheKey].data);
-          case 1:
-            headers = {
-              'Content-Type': 'application/json'
-            };
-            if (apiToken) {
-              headers['Authorization'] = "Bearer ".concat(apiToken);
-            }
-            _context.n = 2;
-            return fetch("".concat(apiUrl, "/api/").concat(endpoint), _objectSpread2({
-              headers: headers
-            }, options));
-          case 2:
-            response = _context.v;
-            if (response.ok) {
-              _context.n = 3;
-              break;
-            }
-            throw new Error("Strapi API error: ".concat(response.status));
-          case 3:
-            _context.n = 4;
-            return response.json();
-          case 4:
-            data = _context.v;
-            // Update cache
-            setCache(function (prev) {
-              return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, cacheKey, {
-                data: data,
-                timestamp: now
-              }));
-            });
-            return _context.a(2, data);
-        }
-      }, _callee);
-    }));
-    return function (_x) {
-      return _ref2.apply(this, arguments);
-    };
-  }(), [apiUrl, apiToken, siteSlug, cacheTime, cache]);
-
-  /**
-   * Fetch a page by its pageType enum, scoped to the current site.
-   *
-   * Query:
-   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=vaadhlabs
-   *       &populate[layout][populate]=*&populate[metadata]=*
-   */
-  var fetchPage = React.useCallback(/*#__PURE__*/function () {
-    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(pageType) {
-      var _data$data;
-      var endpoint, data;
-      return _regenerator().w(function (_context2) {
-        while (1) switch (_context2.n) {
-          case 0:
-            endpoint = "pages?filters[pageType][$eq]=".concat(pageType);
-            if (siteSlug) {
-              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-            }
-            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
-            _context2.n = 1;
-            return fetchFromStrapi(endpoint);
-          case 1:
-            data = _context2.v;
-            return _context2.a(2, (data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data[0]) || null);
-        }
-      }, _callee2);
-    }));
-    return function (_x2) {
-      return _ref3.apply(this, arguments);
-    };
-  }(), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch a custom page by its customSlug, scoped to the current site.
-   */
-  var fetchCustomPage = React.useCallback(/*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(slug) {
-      var _data$data2;
-      var endpoint, data;
-      return _regenerator().w(function (_context3) {
-        while (1) switch (_context3.n) {
-          case 0:
-            endpoint = "pages?filters[pageType][$eq]=custom&filters[customSlug][$eq]=".concat(slug);
-            if (siteSlug) {
-              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-            }
-            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
-            _context3.n = 1;
-            return fetchFromStrapi(endpoint);
-          case 1:
-            data = _context3.v;
-            return _context3.a(2, (data === null || data === void 0 || (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2[0]) || null);
-        }
-      }, _callee3);
-    }));
-    return function (_x3) {
-      return _ref4.apply(this, arguments);
-    };
-  }(), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch all pages for the current site (navigation/sitemap).
-   */
-  var fetchAllPages = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
-    var endpoint, data;
-    return _regenerator().w(function (_context4) {
-      while (1) switch (_context4.n) {
-        case 0:
-          endpoint = 'pages?fields[0]=title&fields[1]=pageType&fields[2]=customSlug&fields[3]=isActive&sort=title:asc';
-          if (siteSlug) {
-            endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
-          }
-          _context4.n = 1;
-          return fetchFromStrapi(endpoint);
-        case 1:
-          data = _context4.v;
-          return _context4.a(2, (data === null || data === void 0 ? void 0 : data.data) || []);
-      }
-    }, _callee4);
-  })), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Fetch site configuration (branding, navigation, footer, integrations, emailConfig).
-   */
-  var fetchSiteConfig = React.useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
-    var _data$data3;
-    var endpoint, data;
-    return _regenerator().w(function (_context5) {
-      while (1) switch (_context5.n) {
-        case 0:
-          if (siteSlug) {
-            _context5.n = 1;
-            break;
-          }
-          return _context5.a(2, null);
-        case 1:
-          endpoint = "sites?filters[slug][$eq]=".concat(siteSlug) + '&populate[brandColors]=*' + '&populate[navigation]=*' + '&populate[footer][populate]=columns.links' + '&populate[integrations]=*' + '&populate[emailConfig]=*';
-          _context5.n = 2;
-          return fetchFromStrapi(endpoint);
-        case 2:
-          data = _context5.v;
-          return _context5.a(2, (data === null || data === void 0 || (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3[0]) || null);
-      }
-    }, _callee5);
-  })), [fetchFromStrapi, siteSlug]);
-
-  /**
-   * Submit a form (contact, lead, demo, newsletter, support).
-   *
-   * Uses the custom public endpoint:
-   *   POST /api/form-submissions/submit
-   */
-  var submitForm = React.useCallback(/*#__PURE__*/function () {
-    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(formData) {
-      var response, _error$error, error;
-      return _regenerator().w(function (_context6) {
-        while (1) switch (_context6.n) {
-          case 0:
-            _context6.n = 1;
-            return fetch("".concat(apiUrl, "/api/form-submissions/submit"), {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(_objectSpread2(_objectSpread2({}, formData), {}, {
-                siteSlug: siteSlug
-              }))
-            });
-          case 1:
-            response = _context6.v;
-            if (response.ok) {
-              _context6.n = 3;
-              break;
-            }
-            _context6.n = 2;
-            return response.json()["catch"](function () {
-              return {};
-            });
-          case 2:
-            error = _context6.v;
-            throw new Error((error === null || error === void 0 || (_error$error = error.error) === null || _error$error === void 0 ? void 0 : _error$error.message) || "Submission failed: ".concat(response.status));
-          case 3:
-            return _context6.a(2, response.json());
-        }
-      }, _callee6);
-    }));
-    return function (_x4) {
-      return _ref7.apply(this, arguments);
-    };
-  }(), [apiUrl, siteSlug]);
-
-  /**
-   * Clear cache
-   */
-  var clearCache = React.useCallback(function () {
-    var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    if (endpoint) {
-      setCache(function (prev) {
-        var newCache = _objectSpread2({}, prev);
-        Object.keys(newCache).forEach(function (key) {
-          if (key.includes(endpoint)) {
-            delete newCache[key];
-          }
-        });
-        return newCache;
-      });
-    } else {
-      setCache({});
-    }
-  }, []);
-  var value = {
-    apiUrl: apiUrl,
-    siteSlug: siteSlug,
-    fetchFromStrapi: fetchFromStrapi,
-    fetchPage: fetchPage,
-    fetchCustomPage: fetchCustomPage,
-    fetchAllPages: fetchAllPages,
-    fetchSiteConfig: fetchSiteConfig,
-    submitForm: submitForm,
-    clearCache: clearCache
-  };
-  return /*#__PURE__*/React.createElement(StrapiContext.Provider, {
-    value: value
-  }, children);
-};
-var useStrapi = function useStrapi() {
-  var context = React.useContext(StrapiContext);
-  if (!context) {
-    throw new Error('useStrapi must be used within a StrapiProvider');
-  }
-  return context;
-};
-
-/**
- * Map a Stripe price (as shaped by Strapi's /api/stripe/prices) into the
- * PricingCard prop shape. Stripe is the source of truth — Strapi proxies +
- * caches the call, the marketing site renders whatever Stripe says.
- *
- * Display rules:
- *   - contactSales=true        → "Contact us" (no period suffix)
- *   - unitAmount===0           → "$0" + /interval (e.g. Free tier)
- *   - else                     → "$<amount>" + /interval
- */
-var mapStripePriceToCard = function mapStripePriceToCard(price) {
-  var unitDollars = price.unitAmount != null ? price.unitAmount / 100 : null;
-  var period = price.interval && price.interval !== 'one_time' ? "/ ".concat(price.interval) : '';
-  var displayPrice;
-  var displayPeriod;
-  if (price.contactSales) {
-    displayPrice = 'Contact us';
-    displayPeriod = '';
-  } else if (unitDollars === 0) {
-    displayPrice = '$0';
-    displayPeriod = period;
-  } else if (unitDollars != null) {
-    displayPrice = "$".concat(unitDollars.toLocaleString('en-US', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2
-    }));
-    displayPeriod = period;
-  } else {
-    displayPrice = '';
-    displayPeriod = '';
-  }
-  return {
-    id: price.id,
-    name: price.name,
-    description: price.description || '',
-    price: displayPrice,
-    period: displayPeriod,
-    features: price.features || [],
-    cta: {
-      text: price.ctaText || 'Get started',
-      link: price.ctaLink || '/contact',
-      style: price.popular ? 'secondary' : 'primary'
-    },
-    highlighted: !!price.popular,
-    badge: price.popular ? 'Most popular' : '',
-    sortOrder: price.sortOrder || 0
-  };
-};
-
-/**
- * Pricing Table Section Component.
- *
- * Two modes:
- *   1. Static — pass `plans` from Strapi or any other source. Renders as-is.
- *   2. Stripe-live — when `plans` is empty AND apiUrl is in StrapiContext,
- *      fetches /api/stripe/prices and renders the live Stripe Products.
- *      Stripe is then the single source of truth — edit the Product /
- *      metadata in Stripe Dashboard and the marketing site reflects within
- *      the cache TTL (60s strapi cache + browser cache-control).
- *
- * On fetch failure, falls back to whatever static `plans` were passed
- * (empty list → empty grid, which is acceptable degradation for a pricing
- * page).
- */
-var PricingTable = function PricingTable(_ref) {
-  var title = _ref.title,
-    subtitle = _ref.subtitle,
-    _ref$plans = _ref.plans,
-    staticPlans = _ref$plans === void 0 ? [] : _ref$plans,
-    _ref$showToggle = _ref.showToggle,
-    showToggle = _ref$showToggle === void 0 ? true : _ref$showToggle,
-    _ref$monthlyLabel = _ref.monthlyLabel,
-    monthlyLabel = _ref$monthlyLabel === void 0 ? 'Monthly' : _ref$monthlyLabel,
-    _ref$yearlyLabel = _ref.yearlyLabel,
-    yearlyLabel = _ref$yearlyLabel === void 0 ? 'Yearly' : _ref$yearlyLabel,
-    _ref$backgroundColor = _ref.backgroundColor,
-    backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState('monthly'),
-    _useState2 = _slicedToArray(_useState, 2),
-    billingPeriod = _useState2[0],
-    setBillingPeriod = _useState2[1];
-  var _useState3 = React.useState(null),
-    _useState4 = _slicedToArray(_useState3, 2),
-    livePlans = _useState4[0],
-    setLivePlans = _useState4[1];
-
-  // Pull apiUrl from StrapiContext if available. Outside a provider, useStrapi
-  // throws — guard so storybook / standalone usage still works.
-  var apiUrl;
-  try {
-    var _ref2 = useStrapi() || {};
-    apiUrl = _ref2.apiUrl;
-  } catch (_) {
-    apiUrl = null;
-  }
-  var shouldFetchLive = staticPlans.length === 0 && !!apiUrl;
-  React.useEffect(function () {
-    if (!shouldFetchLive) return;
-    var cancelled = false;
-    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
-      var res, body, mapped;
-      return _regenerator().w(function (_context) {
-        while (1) switch (_context.p = _context.n) {
-          case 0:
-            _context.p = 0;
-            _context.n = 1;
-            return fetch("".concat(apiUrl, "/api/stripe/prices"));
-          case 1:
-            res = _context.v;
-            if (res.ok) {
-              _context.n = 2;
-              break;
-            }
-            return _context.a(2);
-          case 2:
-            _context.n = 3;
-            return res.json();
-          case 3:
-            body = _context.v;
-            if (!cancelled) {
-              _context.n = 4;
-              break;
-            }
-            return _context.a(2);
-          case 4:
-            if (body !== null && body !== void 0 && body.configured && Array.isArray(body.prices)) {
-              mapped = body.prices.map(mapStripePriceToCard).sort(function (a, b) {
-                return a.sortOrder - b.sortOrder;
-              });
-              setLivePlans(mapped);
-            }
-            _context.n = 6;
-            break;
-          case 5:
-            _context.p = 5;
-            _context.v;
-          case 6:
-            return _context.a(2);
-        }
-      }, _callee, null, [[0, 5]]);
-    }))();
-    return function () {
-      cancelled = true;
-    };
-  }, [shouldFetchLive, apiUrl]);
-
-  // Resolution order: static plans (when provided) → live Stripe plans → empty.
-  var plans = staticPlans.length > 0 ? staticPlans : livePlans || [];
-
-  // Auto-detect if toggle is useful: only show if plans use monthlyPrice/yearlyPrice
-  var hasLegacyPricing = plans.some(function (p) {
-    return p.monthlyPrice != null || p.yearlyPrice != null;
-  });
-  var shouldShowToggle = showToggle && hasLegacyPricing;
-  var containerStyle = {
-    background: backgroundColor,
-    padding: '4rem 2rem'
-  };
-  return /*#__PURE__*/React.createElement("section", {
-    className: clsx('pricing-table-section', className),
-    style: containerStyle
-  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
-    className: "section-header",
-    style: {
-      textAlign: 'center',
-      marginBottom: '2rem'
-    }
-  }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: '2.5rem',
-      marginBottom: '0.5rem'
-    }
-  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      opacity: 0.8
-    }
-  }, subtitle)), shouldShowToggle && /*#__PURE__*/React.createElement("div", {
-    style: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: '1rem',
-      marginBottom: '3rem'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontWeight: billingPeriod === 'monthly' ? 600 : 400,
-      color: billingPeriod === 'monthly' ? '#1f2937' : '#9ca3af'
-    }
-  }, monthlyLabel), /*#__PURE__*/React.createElement("button", {
-    onClick: function onClick() {
-      return setBillingPeriod(function (p) {
-        return p === 'monthly' ? 'yearly' : 'monthly';
-      });
-    },
-    style: {
-      width: '56px',
-      height: '28px',
-      borderRadius: '14px',
-      background: '#4f46e5',
-      border: 'none',
-      cursor: 'pointer',
-      position: 'relative',
-      padding: 0
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      position: 'absolute',
-      top: '2px',
-      left: billingPeriod === 'yearly' ? '30px' : '2px',
-      width: '24px',
-      height: '24px',
-      borderRadius: '50%',
-      background: '#fff',
-      transition: 'left 0.2s'
-    }
-  })), /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontWeight: billingPeriod === 'yearly' ? 600 : 400,
-      color: billingPeriod === 'yearly' ? '#1f2937' : '#9ca3af'
-    }
-  }, yearlyLabel)), /*#__PURE__*/React.createElement("div", {
-    className: "pricing-grid",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: "repeat(".concat(Math.min(plans.length, 4), ", 1fr)"),
-      gap: '2rem',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      alignItems: 'stretch'
-    }
-  }, plans.map(function (plan, index) {
-    return /*#__PURE__*/React.createElement(PricingCard, _extends({
-      key: plan.id || index
-    }, plan, {
-      billingPeriod: billingPeriod
-    }));
-  })));
-};
-
-/**
- * Pricing Card Component
- * Supports both legacy props (monthlyPrice, yearlyPrice, ctaButton, features as [{text,included}])
- * and Strapi props (price, period, cta, isPopular, features as string[])
- */
-var PricingCard = function PricingCard(_ref4) {
-  var name = _ref4.name,
-    description = _ref4.description,
-    monthlyPrice = _ref4.monthlyPrice,
-    yearlyPrice = _ref4.yearlyPrice,
-    strapiPrice = _ref4.price,
-    strapiPeriod = _ref4.period,
-    _ref4$currency = _ref4.currency,
-    currency = _ref4$currency === void 0 ? '$' : _ref4$currency,
-    billingPeriod = _ref4.billingPeriod,
-    _ref4$features = _ref4.features,
-    features = _ref4$features === void 0 ? [] : _ref4$features,
-    ctaButton = _ref4.ctaButton,
-    cta = _ref4.cta,
-    _ref4$highlighted = _ref4.highlighted,
-    highlighted = _ref4$highlighted === void 0 ? false : _ref4$highlighted,
-    isPopular = _ref4.isPopular,
-    badge = _ref4.badge;
-  // Resolve highlighted from either prop
-  var isHighlighted = highlighted || isPopular || false;
-
-  // Resolve price: prefer Strapi's flat `price` string, fallback to legacy monthly/yearly
-  var displayPrice;
-  var displayPeriod;
-  if (strapiPrice !== undefined) {
-    // Strapi format: price is a string like "Free", "$49", "Custom"
-    displayPrice = strapiPrice;
-    displayPeriod = strapiPeriod || '';
-  } else {
-    // Legacy format: monthlyPrice / yearlyPrice are numbers
-    var numPrice = billingPeriod === 'yearly' && yearlyPrice ? yearlyPrice : monthlyPrice;
-    displayPrice = numPrice != null ? "".concat(currency).concat(numPrice) : '';
-    displayPeriod = billingPeriod === 'yearly' ? '/year' : '/month';
-  }
-
-  // Resolve CTA button: Strapi sends `cta`, legacy sends `ctaButton`
-  var resolvedCta = cta || ctaButton;
-
-  // Resolve badge for popular plans
-  var resolvedBadge = badge || (isPopular ? 'Most Popular' : null);
-
-  // Normalize features: handle both string[] and [{text, included}]
-  var normalizedFeatures = features.map(function (f) {
-    if (typeof f === 'string') {
-      return {
-        text: f,
-        included: true
-      };
-    }
-    return f;
-  });
-  var cardStyle = {
-    background: isHighlighted ? 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' : '#fff',
-    color: isHighlighted ? '#fff' : '#1f2937',
-    borderRadius: '16px',
-    padding: '2rem',
-    boxShadow: isHighlighted ? '0 20px 40px rgba(79, 70, 229, 0.3)' : '0 4px 20px rgba(0,0,0,0.08)',
-    position: 'relative',
-    transform: isHighlighted ? 'scale(1.05)' : 'scale(1)',
-    display: 'flex',
-    flexDirection: 'column'
-  };
-  return /*#__PURE__*/React.createElement("div", {
-    className: "pricing-card",
-    style: cardStyle
-  }, resolvedBadge && /*#__PURE__*/React.createElement("div", {
-    style: {
-      position: 'absolute',
-      top: '-12px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      background: isHighlighted ? '#fff' : '#4f46e5',
-      color: isHighlighted ? '#4f46e5' : '#fff',
-      padding: '0.25rem 1rem',
-      borderRadius: '20px',
-      fontSize: '0.875rem',
-      fontWeight: 600
-    }
-  }, resolvedBadge), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      marginBottom: '1.5rem'
-    }
-  }, /*#__PURE__*/React.createElement("h3", {
-    style: {
-      fontSize: '1.5rem',
-      fontWeight: 600,
-      marginBottom: '0.5rem'
-    }
-  }, name), description && /*#__PURE__*/React.createElement("p", {
-    style: {
-      opacity: 0.8,
-      fontSize: '0.9rem'
-    }
-  }, description)), /*#__PURE__*/React.createElement("div", {
-    style: {
-      textAlign: 'center',
-      marginBottom: '2rem'
-    }
-  }, /*#__PURE__*/React.createElement("span", {
-    style: {
-      fontSize: '3rem',
-      fontWeight: 700
-    }
-  }, displayPrice), displayPeriod && /*#__PURE__*/React.createElement("span", {
-    style: {
-      opacity: 0.8
-    }
-  }, displayPeriod)), /*#__PURE__*/React.createElement("ul", {
-    style: {
-      listStyle: 'none',
-      padding: 0,
-      margin: 0,
-      marginBottom: '2rem',
-      flex: 1
-    }
-  }, normalizedFeatures.map(function (feature, idx) {
-    return /*#__PURE__*/React.createElement("li", {
-      key: idx,
-      style: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        padding: '0.5rem 0',
-        opacity: feature.included !== false ? 1 : 0.5
-      }
-    }, feature.included !== false ? /*#__PURE__*/React.createElement(Check, {
-      size: 18,
-      color: isHighlighted ? '#fff' : '#22c55e'
-    }) : /*#__PURE__*/React.createElement(X, {
-      size: 18,
-      color: isHighlighted ? 'rgba(255,255,255,0.5)' : '#ef4444'
-    }), /*#__PURE__*/React.createElement("span", null, feature.text));
-  })), resolvedCta && /*#__PURE__*/React.createElement(Button, {
-    text: resolvedCta.text || resolvedCta.label,
-    link: resolvedCta.link || resolvedCta.href || resolvedCta.url,
-    variant: isHighlighted ? 'secondary' : resolvedCta.style || resolvedCta.variant || 'primary',
-    size: "large",
-    style: {
-      width: '100%',
-      background: isHighlighted ? '#fff' : undefined,
-      color: isHighlighted ? '#4f46e5' : undefined
-    }
-  }));
-};
-
-/**
- * Stats Counter Section Component
- */
-var StatsCounter = function StatsCounter(_ref) {
+var StatsStrip = function StatsStrip(_ref) {
   var title = _ref.title,
     subtitle = _ref.subtitle,
     _ref$stats = _ref.stats,
     stats = _ref$stats === void 0 ? [] : _ref$stats,
-    _ref$backgroundColor = _ref.backgroundColor,
-    backgroundColor = _ref$backgroundColor === void 0 ? '#4f46e5' : _ref$backgroundColor,
-    gradientFrom = _ref.gradientFrom,
-    gradientTo = _ref.gradientTo,
-    _ref$textColor = _ref.textColor,
-    textColor = _ref$textColor === void 0 ? '#ffffff' : _ref$textColor,
-    _ref$animateOnScroll = _ref.animateOnScroll,
-    animateOnScroll = _ref$animateOnScroll === void 0 ? true : _ref$animateOnScroll,
-    _ref$className = _ref.className,
-    className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(!animateOnScroll),
-    _useState2 = _slicedToArray(_useState, 2),
-    isVisible = _useState2[0],
-    setIsVisible = _useState2[1];
-  var sectionRef = React.useRef(null);
-  React.useEffect(function () {
-    if (!animateOnScroll) return;
-    var observer = new IntersectionObserver(function (_ref2) {
-      var _ref3 = _slicedToArray(_ref2, 1),
-        entry = _ref3[0];
-      if (entry.isIntersecting) {
-        setIsVisible(true);
-        observer.disconnect();
-      }
-    }, {
-      threshold: 0.2
-    });
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    return function () {
-      return observer.disconnect();
-    };
-  }, [animateOnScroll]);
-  var containerStyle = _objectSpread2(_objectSpread2({}, gradientFrom && gradientTo ? {
-    backgroundImage: "linear-gradient(135deg, ".concat(gradientFrom, ", ").concat(gradientTo, ")")
-  } : {
-    backgroundColor: backgroundColor
-  }), {}, {
-    color: textColor,
-    padding: '4rem 2rem'
-  });
+    _ref$variant = _ref.variant,
+    variant = _ref$variant === void 0 ? 'light' : _ref$variant,
+    className = _ref.className;
+  var isDark = variant === 'dark';
+  var sectionStyle = {
+    padding: '4rem 2rem',
+    background: isDark ? '#0f172a' : '#f8fafc',
+    color: isDark ? '#f8fafc' : '#0f172a'
+  };
+  var headerStyle = {
+    textAlign: 'center',
+    marginBottom: '2rem'
+  };
+  var titleStyle = {
+    fontSize: '1.5rem',
+    fontWeight: 700,
+    margin: '0 0 0.5rem',
+    letterSpacing: '-0.015em'
+  };
+  var subtitleStyle = {
+    fontSize: '1rem',
+    opacity: 0.7,
+    margin: 0
+  };
+  var gridStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    gap: 'clamp(2rem, 5vw, 5rem)',
+    flexWrap: 'wrap',
+    maxWidth: '1100px',
+    margin: '0 auto'
+  };
+  var statStyle = {
+    textAlign: 'center'
+  };
+  var valueStyle = {
+    fontSize: 'clamp(2rem, 4vw, 3rem)',
+    fontWeight: 700,
+    lineHeight: 1,
+    letterSpacing: '-0.02em',
+    color: isDark ? '#fff' : 'var(--gc-primary, #4f46e5)'
+  };
+  var suffixStyle = {
+    fontSize: '60%',
+    opacity: 0.7,
+    marginLeft: '0.15em'
+  };
+  var labelStyle = {
+    fontSize: '0.85rem',
+    opacity: 0.7,
+    marginTop: '0.5rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    fontWeight: 500
+  };
   return /*#__PURE__*/React.createElement("section", {
-    ref: sectionRef,
-    className: clsx('stats-counter-section', className),
-    style: containerStyle
+    style: sectionStyle,
+    className: clsx('stats-strip', className)
   }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
-    className: "section-header",
-    style: {
-      textAlign: 'center',
-      marginBottom: '3rem'
-    }
+    style: headerStyle
   }, title && /*#__PURE__*/React.createElement("h2", {
-    style: {
-      fontSize: '2.5rem',
-      marginBottom: '0.5rem'
-    }
+    style: titleStyle
   }, title), subtitle && /*#__PURE__*/React.createElement("p", {
-    style: {
-      fontSize: '1.2rem',
-      opacity: 0.9
-    }
+    style: subtitleStyle
   }, subtitle)), /*#__PURE__*/React.createElement("div", {
-    className: "stats-grid",
-    style: {
-      display: 'grid',
-      gridTemplateColumns: "repeat(".concat(Math.min(stats.length, 4), ", 1fr)"),
-      gap: '2rem',
-      maxWidth: '1200px',
-      margin: '0 auto',
-      textAlign: 'center'
-    }
-  }, stats.map(function (stat, index) {
-    return /*#__PURE__*/React.createElement(StatItem, _extends({
-      key: stat.id || index
-    }, stat, {
-      isVisible: isVisible,
-      delay: index * 100
-    }));
+    style: gridStyle
+  }, stats.map(function (stat, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: statStyle
+    }, /*#__PURE__*/React.createElement("div", {
+      style: valueStyle
+    }, stat.value, stat.suffix && /*#__PURE__*/React.createElement("span", {
+      style: suffixStyle
+    }, stat.suffix)), /*#__PURE__*/React.createElement("div", {
+      style: labelStyle
+    }, stat.label));
   })));
-};
-
-/**
- * Stat Item Component with counter animation
- */
-var StatItem = function StatItem(_ref4) {
-  var value = _ref4.value,
-    label = _ref4.label,
-    _ref4$prefix = _ref4.prefix,
-    prefix = _ref4$prefix === void 0 ? '' : _ref4$prefix,
-    _ref4$suffix = _ref4.suffix,
-    suffix = _ref4$suffix === void 0 ? '' : _ref4$suffix,
-    icon = _ref4.icon,
-    isVisible = _ref4.isVisible,
-    _ref4$delay = _ref4.delay,
-    delay = _ref4$delay === void 0 ? 0 : _ref4$delay;
-  var _useState3 = React.useState('0'),
-    _useState4 = _slicedToArray(_useState3, 2),
-    displayValue = _useState4[0],
-    setDisplayValue = _useState4[1];
-  var IconComponent = icon && Icons[icon];
-
-  // Parse numeric value for animation
-  var numericValue = parseFloat(value === null || value === void 0 ? void 0 : value.replace(/[^0-9.]/g, '')) || 0;
-  var isNumeric = !isNaN(numericValue) && numericValue > 0;
-  React.useEffect(function () {
-    if (!isVisible || !isNumeric) {
-      setDisplayValue(value);
-      return;
-    }
-    var duration = 2000;
-    var steps = 60;
-    var stepDuration = duration / steps;
-    var increment = numericValue / steps;
-    var current = 0;
-    var timer = setTimeout(function () {
-      var interval = setInterval(function () {
-        current += increment;
-        if (current >= numericValue) {
-          setDisplayValue(value);
-          clearInterval(interval);
-        } else {
-          setDisplayValue(Math.floor(current).toLocaleString());
-        }
-      }, stepDuration);
-      return function () {
-        return clearInterval(interval);
-      };
-    }, delay);
-    return function () {
-      return clearTimeout(timer);
-    };
-  }, [isVisible, value, numericValue, isNumeric, delay]);
-  return /*#__PURE__*/React.createElement("div", {
-    className: "stat-item"
-  }, IconComponent && /*#__PURE__*/React.createElement("div", {
-    style: {
-      marginBottom: '1rem'
-    }
-  }, /*#__PURE__*/React.createElement(IconComponent, {
-    size: 40,
-    strokeWidth: 1.5
-  })), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-      fontWeight: 700,
-      marginBottom: '0.5rem'
-    }
-  }, prefix, displayValue, suffix), /*#__PURE__*/React.createElement("div", {
-    style: {
-      fontSize: '1rem',
-      opacity: 0.9,
-      textTransform: 'uppercase',
-      letterSpacing: '0.05em'
-    }
-  }, label));
 };
 
 function ok$1() {}
@@ -56004,14 +54758,14 @@ function post(tree, options) {
   visit(tree, transform);
 
   return toJsxRuntime(tree, {
-    Fragment: jsxRuntime.Fragment,
+    Fragment,
     // @ts-expect-error
     // React components are allowed to return numbers,
     // but not according to the types in hast-util-to-jsx-runtime
     components,
     ignoreInvalidStyle: true,
-    jsx: jsxRuntime.jsx,
-    jsxs: jsxRuntime.jsxs,
+    jsx,
+    jsxs,
     passKeys: true,
     passNode: true
   })
@@ -66347,6 +65101,2355 @@ function rehypeRaw(options) {
   }
 }
 
+var _excluded$4 = ["node"],
+  _excluded2 = ["node"],
+  _excluded3 = ["node"],
+  _excluded4 = ["node"],
+  _excluded5 = ["node"],
+  _excluded6 = ["node"],
+  _excluded7 = ["node", "inline"],
+  _excluded8 = ["node"];
+
+/** Shared markdown element styling (matches ContentBlock). */
+var defaultMarkdownComponents = {
+  p: function p(_ref) {
+    _ref.node;
+      var _p = _objectWithoutProperties(_ref, _excluded$4);
+    return /*#__PURE__*/React.createElement("p", _extends({
+      style: {
+        margin: '0 0 1rem'
+      }
+    }, _p));
+  },
+  ul: function ul(_ref2) {
+    _ref2.node;
+      var p = _objectWithoutProperties(_ref2, _excluded2);
+    return /*#__PURE__*/React.createElement("ul", _extends({
+      style: {
+        margin: '0 0 1rem',
+        paddingLeft: '1.5rem'
+      }
+    }, p));
+  },
+  ol: function ol(_ref3) {
+    _ref3.node;
+      var p = _objectWithoutProperties(_ref3, _excluded3);
+    return /*#__PURE__*/React.createElement("ol", _extends({
+      style: {
+        margin: '0 0 1rem',
+        paddingLeft: '1.5rem'
+      }
+    }, p));
+  },
+  li: function li(_ref4) {
+    _ref4.node;
+      var p = _objectWithoutProperties(_ref4, _excluded4);
+    return /*#__PURE__*/React.createElement("li", _extends({
+      style: {
+        margin: '0 0 0.4rem'
+      }
+    }, p));
+  },
+  h3: function h3(_ref5) {
+    _ref5.node;
+      var p = _objectWithoutProperties(_ref5, _excluded5);
+    return /*#__PURE__*/React.createElement("h3", _extends({
+      style: {
+        margin: '1.5rem 0 0.5rem',
+        fontSize: '1.15rem',
+        fontWeight: 600
+      }
+    }, p));
+  },
+  h4: function h4(_ref6) {
+    _ref6.node;
+      var p = _objectWithoutProperties(_ref6, _excluded6);
+    return /*#__PURE__*/React.createElement("h4", _extends({
+      style: {
+        margin: '1.25rem 0 0.4rem',
+        fontSize: '1.05rem',
+        fontWeight: 600
+      }
+    }, p));
+  },
+  code: function code(_ref7) {
+    _ref7.node;
+      var inline = _ref7.inline,
+      p = _objectWithoutProperties(_ref7, _excluded7);
+    return inline ? /*#__PURE__*/React.createElement("code", _extends({
+      style: {
+        background: '#f1f5f9',
+        padding: '0.1rem 0.35rem',
+        borderRadius: 4,
+        fontSize: '0.92em'
+      }
+    }, p)) : /*#__PURE__*/React.createElement("code", p);
+  },
+  a: function a(_ref8) {
+    _ref8.node;
+      var p = _objectWithoutProperties(_ref8, _excluded8);
+    return /*#__PURE__*/React.createElement("a", _extends({
+      style: {
+        color: 'var(--gc-primary, #2563eb)',
+        textDecoration: 'underline'
+      }
+    }, p));
+  }
+};
+
+/**
+ * Renders a CMS string as markdown + optional raw HTML (via rehype-raw),
+ * including clickable links. Use where plain `{text}` inside a paragraph hid anchors.
+ */
+var MarkdownRichText = function MarkdownRichText(_ref9) {
+  var children = _ref9.children,
+    className = _ref9.className,
+    style = _ref9.style,
+    components = _ref9.components;
+  var merged = components === undefined ? defaultMarkdownComponents : _objectSpread2(_objectSpread2({}, defaultMarkdownComponents), components);
+  return /*#__PURE__*/React.createElement("div", {
+    className: clsx('markdown-rich-text', className),
+    style: style
+  }, /*#__PURE__*/React.createElement(Markdown, {
+    rehypePlugins: [rehypeRaw],
+    components: merged
+  }, children || ''));
+};
+
+var _excluded$3 = ["node"];
+var Proof = function Proof(_ref) {
+  var _ref$title = _ref.title,
+    title = _ref$title === void 0 ? 'Verify it yourself.' : _ref$title,
+    body = _ref.body,
+    ctaText = _ref.ctaText,
+    ctaLink = _ref.ctaLink,
+    _ref$command = _ref.command,
+    command = _ref$command === void 0 ? '$ sha256sum savings-ledger.csv' : _ref$command,
+    _ref$output = _ref.output,
+    output = _ref$output === void 0 ? 'a3f2c9b88e1d4f6a9c0b5d8e72f1a4b6c8d9e0f12 savings-ledger.csv' : _ref$output,
+    _ref$variant = _ref.variant,
+    variant = _ref$variant === void 0 ? 'split' : _ref$variant,
+    className = _ref.className;
+  var sectionStyle = {
+    padding: '4rem 2rem',
+    background: '#0b1220',
+    color: '#e2e8f0'
+  };
+  var innerStyle = _objectSpread2({
+    maxWidth: '1100px',
+    margin: '0 auto'
+  }, variant === 'split' ? {
+    display: 'grid',
+    // auto-fit collapses to a single column when viewport < ~720px
+    // so the terminal block and copy stack instead of being squeezed
+    // into 150-px-wide columns on mobile.
+    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+    gap: '3rem',
+    alignItems: 'center'
+  } : {
+    display: 'grid',
+    gridTemplateColumns: '1fr',
+    gap: '2rem'
+  });
+  var terminalStyle = {
+    background: '#020617',
+    border: '1px solid #1e293b',
+    borderRadius: '10px',
+    padding: '1.25rem 1.5rem',
+    fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace",
+    fontSize: '0.85rem',
+    lineHeight: 1.6,
+    minWidth: 0
+  };
+  var dotsStyle = {
+    display: 'flex',
+    gap: '0.4rem',
+    marginBottom: '0.75rem'
+  };
+  var copyBlockStyle = {
+    minWidth: 0
+  };
+  var titleStyle = {
+    fontSize: 'clamp(1.4rem, 4vw, 1.75rem)',
+    fontWeight: 700,
+    marginBottom: '0.75rem',
+    letterSpacing: '-0.015em',
+    color: '#f8fafc',
+    lineHeight: 1.2,
+    margin: '0 0 0.75rem'
+  };
+  var bodyStyle = {
+    fontSize: '1rem',
+    lineHeight: 1.65,
+    opacity: 0.85,
+    marginBottom: '1.5rem',
+    margin: '0 0 1.5rem'
+  };
+  var ctaStyle = {
+    display: 'inline-flex',
+    padding: '0.6rem 1.2rem',
+    borderRadius: '8px',
+    border: '1px solid var(--gc-primary, #38bdf8)',
+    color: 'var(--gc-primary, #38bdf8)',
+    textDecoration: 'none',
+    fontSize: '0.95rem',
+    fontWeight: 500
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    style: sectionStyle,
+    className: clsx('proof', className)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: innerStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: terminalStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: dotsStyle
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: '50%',
+      background: '#ef4444',
+      display: 'inline-block'
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: '50%',
+      background: '#eab308',
+      display: 'inline-block'
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: '50%',
+      background: '#22c55e',
+      display: 'inline-block'
+    }
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#64748b'
+    }
+  }, "$ "), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#e2e8f0'
+    }
+  }, command.replace(/^\$\s*/, ''))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#94a3b8',
+      marginTop: '0.5rem',
+      wordBreak: 'break-all'
+    }
+  }, output)), /*#__PURE__*/React.createElement("div", {
+    style: copyBlockStyle
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: titleStyle
+  }, title), body && /*#__PURE__*/React.createElement(MarkdownRichText, {
+    style: bodyStyle,
+    components: {
+      a: function a(_ref2) {
+        _ref2.node;
+          var p = _objectWithoutProperties(_ref2, _excluded$3);
+        return /*#__PURE__*/React.createElement("a", _extends({}, p, {
+          style: {
+            color: 'var(--gc-primary, #38bdf8)',
+            textDecoration: 'underline'
+          }
+        }));
+      }
+    }
+  }, body), ctaText && ctaLink && /*#__PURE__*/React.createElement("a", {
+    href: ctaLink,
+    style: ctaStyle
+  }, ctaText, " \u2192"))));
+};
+
+var Guarantee = function Guarantee(_ref) {
+  var badge = _ref.badge,
+    title = _ref.title,
+    body = _ref.body,
+    className = _ref.className;
+  var sectionStyle = {
+    padding: '3rem 2rem',
+    background: '#f8fafc'
+  };
+  var cardStyle = {
+    maxWidth: '800px',
+    margin: '0 auto',
+    background: '#fff',
+    border: '1px solid #e2e8f0',
+    borderRadius: '12px',
+    padding: '2rem 2.25rem',
+    display: 'flex',
+    gap: '1.5rem',
+    alignItems: 'flex-start'
+  };
+  var badgeCircleStyle = {
+    width: '56px',
+    height: '56px',
+    borderRadius: '50%',
+    background: 'var(--gc-primary, #4f46e5)',
+    color: '#fff',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '1.5rem',
+    flexShrink: 0
+  };
+  var contentStyle = {
+    display: 'flex',
+    flexDirection: 'column'
+  };
+  var badgeTextStyle = {
+    textTransform: 'uppercase',
+    fontSize: '0.72rem',
+    letterSpacing: '0.12em',
+    fontWeight: 600,
+    color: '#475569',
+    marginBottom: '0.5rem'
+  };
+  var titleStyle = {
+    fontSize: '1.25rem',
+    fontWeight: 700,
+    marginBottom: '0.5rem',
+    color: '#0f172a',
+    letterSpacing: '-0.015em',
+    margin: '0 0 0.5rem'
+  };
+  var bodyStyle = {
+    fontSize: '0.95rem',
+    lineHeight: 1.65,
+    color: '#334155',
+    margin: 0,
+    whiteSpace: 'pre-line'
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    style: sectionStyle,
+    className: clsx('guarantee', className)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: cardStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: badgeCircleStyle
+  }, "\u2713"), /*#__PURE__*/React.createElement("div", {
+    style: contentStyle
+  }, badge && /*#__PURE__*/React.createElement("div", {
+    style: badgeTextStyle
+  }, badge), title && /*#__PURE__*/React.createElement("h3", {
+    style: titleStyle
+  }, title), body && /*#__PURE__*/React.createElement("p", {
+    style: bodyStyle
+  }, body))));
+};
+
+var LogosStrip = function LogosStrip(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    _ref$logos = _ref.logos,
+    logos = _ref$logos === void 0 ? [] : _ref$logos,
+    _ref$variant = _ref.variant,
+    variant = _ref$variant === void 0 ? 'light' : _ref$variant,
+    className = _ref.className;
+  var isMuted = variant === 'muted';
+  var sectionStyle = {
+    padding: '4rem 2rem',
+    background: isMuted ? '#f8fafc' : '#ffffff',
+    borderTop: isMuted ? 'none' : '1px solid #e5e7eb',
+    borderBottom: isMuted ? 'none' : '1px solid #e5e7eb'
+  };
+  var containerStyle = {
+    maxWidth: '1100px',
+    margin: '0 auto',
+    textAlign: 'center'
+  };
+  var eyebrowStyle = {
+    textTransform: 'uppercase',
+    letterSpacing: '0.1em',
+    fontSize: '0.78rem',
+    fontWeight: 600,
+    color: '#64748b',
+    marginBottom: '0.4rem',
+    margin: '0 0 0.4rem'
+  };
+  var subtitleStyle = {
+    fontSize: '0.9rem',
+    color: '#475569',
+    marginBottom: '2rem',
+    margin: '0 0 2rem'
+  };
+  var rowStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    gap: '2rem',
+    flexWrap: 'wrap',
+    marginTop: title ? '2rem' : 0
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    style: sectionStyle,
+    className: clsx('logos-strip', className)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: containerStyle
+  }, title && /*#__PURE__*/React.createElement("p", {
+    style: eyebrowStyle
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: subtitleStyle
+  }, subtitle), /*#__PURE__*/React.createElement("div", {
+    style: rowStyle
+  }, logos.map(function (logo, i) {
+    return /*#__PURE__*/React.createElement(LogoEntry, {
+      key: i,
+      logo: logo
+    });
+  }))));
+};
+var LogoEntry = function LogoEntry(_ref2) {
+  var logo = _ref2.logo;
+  var name = logo.name,
+    image = logo.image,
+    alt = logo.alt,
+    outline = logo.outline,
+    website = logo.website;
+  if (image) {
+    var imgEl = /*#__PURE__*/React.createElement(HoverImg, {
+      src: image,
+      alt: alt || name
+    });
+    if (website) {
+      return /*#__PURE__*/React.createElement("a", {
+        href: website,
+        target: "_blank",
+        rel: "noopener noreferrer",
+        style: {
+          display: 'inline-flex',
+          lineHeight: 0
+        }
+      }, imgEl);
+    }
+    return imgEl;
+  }
+  if (outline) {
+    return /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '32px',
+        paddingLeft: '1.25rem',
+        paddingRight: '1.25rem',
+        borderRadius: '6px',
+        border: '1px dashed #cbd5e1',
+        background: '#ffffff',
+        fontSize: '0.78rem',
+        fontWeight: 500,
+        letterSpacing: '0.05em',
+        color: '#64748b',
+        whiteSpace: 'nowrap'
+      }
+    }, name);
+  }
+  return /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      color: '#334155',
+      opacity: 0.85
+    }
+  }, name);
+};
+var HoverImg = function HoverImg(_ref3) {
+  var src = _ref3.src,
+    alt = _ref3.alt;
+  var _React$useState = React.useState(false),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    hovered = _React$useState2[0],
+    setHovered = _React$useState2[1];
+  return /*#__PURE__*/React.createElement("img", {
+    src: src,
+    alt: alt,
+    onMouseEnter: function onMouseEnter() {
+      return setHovered(true);
+    },
+    onMouseLeave: function onMouseLeave() {
+      return setHovered(false);
+    },
+    style: {
+      height: '32px',
+      maxWidth: '140px',
+      objectFit: 'contain',
+      filter: hovered ? 'grayscale(0)' : 'grayscale(1)',
+      opacity: hovered ? 1 : 0.7,
+      transition: 'filter 0.2s ease, opacity 0.2s ease',
+      display: 'block'
+    }
+  });
+};
+
+/**
+ * Comparison — two-column "them vs us" table that re-renders as labeled
+ * card-rows on narrow viewports.
+ *
+ * Mobile pattern: each comparison pair becomes a single card with the
+ * column labels surfaced as small badges above each side. Side-by-side
+ * is lost (the screen isn't wide enough), but the "which column is
+ * which" signal is preserved by labeling each side in-place rather than
+ * by relying on column position. Visual contrast (muted grey left,
+ * brand-blue accent right) carries over.
+ *
+ * Wide viewports (≥ 640px) keep the original 2-col grid with shared
+ * column headers, which is the punchier shape for desktop scanning.
+ */
+var Comparison = function Comparison(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    leftLabel = _ref.leftLabel,
+    rightLabel = _ref.rightLabel,
+    _ref$rows = _ref.rows,
+    rows = _ref$rows === void 0 ? [] : _ref$rows,
+    className = _ref.className;
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('tc-comparison', className)
+  }, /*#__PURE__*/React.createElement("style", null, COMPARISON_CSS), /*#__PURE__*/React.createElement("div", {
+    className: "tc-comparison-inner"
+  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
+    className: "tc-comparison-header-block"
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    className: "tc-comparison-title"
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    className: "tc-comparison-subtitle"
+  }, subtitle)), /*#__PURE__*/React.createElement("div", {
+    className: "tc-comparison-table"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "tc-comparison-col-header tc-comparison-col-header-left"
+  }, leftLabel), /*#__PURE__*/React.createElement("div", {
+    className: "tc-comparison-col-header tc-comparison-col-header-right"
+  }, rightLabel), rows.map(function (row, i) {
+    return /*#__PURE__*/React.createElement(React.Fragment, {
+      key: i
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "tc-comparison-cell tc-comparison-cell-left",
+      "data-col-label": leftLabel
+    }, row.left), /*#__PURE__*/React.createElement("div", {
+      className: "tc-comparison-cell tc-comparison-cell-right",
+      "data-col-label": rightLabel
+    }, row.right));
+  }))));
+};
+var COMPARISON_CSS = "\n  .tc-comparison {\n    background: #ffffff;\n    padding: 4rem 2rem;\n  }\n  .tc-comparison-inner {\n    max-width: 1100px;\n    margin: 0 auto;\n  }\n  .tc-comparison-header-block {\n    text-align: center;\n    margin-bottom: 2.5rem;\n  }\n  .tc-comparison-title {\n    font-size: 1.875rem;\n    font-weight: 700;\n    letter-spacing: -0.015em;\n    color: #0f172a;\n    margin: 0 0 0.5rem;\n  }\n  .tc-comparison-subtitle {\n    font-size: 1rem;\n    color: #64748b;\n    margin: 0;\n  }\n  .tc-comparison-table {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    border: 1px solid #e5e7eb;\n    border-radius: 12px;\n    overflow: hidden;\n    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);\n  }\n  .tc-comparison-col-header {\n    padding: 1rem 1.5rem;\n    font-size: 0.85rem;\n    text-transform: uppercase;\n    letter-spacing: 0.08em;\n    border-bottom: 1px solid #e5e7eb;\n  }\n  .tc-comparison-col-header-left {\n    background: #f8fafc;\n    color: #64748b;\n    font-weight: 600;\n    border-right: 1px solid #e5e7eb;\n  }\n  .tc-comparison-col-header-right {\n    background: #f1f5f9;\n    color: var(--gc-primary, #4f46e5);\n    font-weight: 700;\n    border-left: 3px solid var(--gc-primary, #4f46e5);\n  }\n  .tc-comparison-cell {\n    padding: 1.25rem 1.5rem;\n    font-size: 0.95rem;\n    line-height: 1.5;\n    border-bottom: 1px solid #e5e7eb;\n  }\n  .tc-comparison-cell-left {\n    color: #64748b;\n    border-right: 1px solid #e5e7eb;\n  }\n  .tc-comparison-cell-right {\n    color: #0f172a;\n    font-weight: 500;\n  }\n  /* Drop the bottom border on the last row. With 2-col grid the last two\n     cells are the last rows; nth-last-of-type covers both. */\n  .tc-comparison-cell:nth-last-of-type(-n+2) {\n    border-bottom: none;\n  }\n\n  /* Narrow viewport: stack pairs as labeled cards, one card per\n     comparison row. The shared column headers are hidden since each\n     cell now carries its own label inline. */\n  @media (max-width: 640px) {\n    .tc-comparison {\n      padding: 3rem 1rem;\n    }\n    .tc-comparison-table {\n      grid-template-columns: 1fr;\n      border: none;\n      border-radius: 0;\n      box-shadow: none;\n      gap: 1rem;\n      overflow: visible;\n    }\n    .tc-comparison-col-header {\n      display: none;\n    }\n    .tc-comparison-cell {\n      border: 1px solid #e5e7eb !important;\n      border-radius: 10px;\n      padding: 1rem 1.1rem;\n      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);\n    }\n    .tc-comparison-cell::before {\n      content: attr(data-col-label);\n      display: block;\n      font-size: 0.68rem;\n      font-weight: 600;\n      text-transform: uppercase;\n      letter-spacing: 0.08em;\n      color: #64748b;\n      margin-bottom: 0.5rem;\n    }\n    .tc-comparison-cell-right {\n      border-left: 3px solid var(--gc-primary, #4f46e5) !important;\n      margin-bottom: 0.5rem;\n    }\n    .tc-comparison-cell-right::before {\n      color: var(--gc-primary, #4f46e5);\n    }\n    /* Re-introduce row-pair grouping: the right card of one pair gets\n       extra bottom margin so it visually separates from the next pair's\n       left card. */\n    .tc-comparison-cell-left + .tc-comparison-cell-right {\n      margin-bottom: 1.25rem;\n    }\n  }\n";
+
+var PilotFindings = function PilotFindings(_ref) {
+  var _ref$title = _ref.title,
+    title = _ref$title === void 0 ? 'What a two-week pilot typically finds' : _ref$title,
+    subtitle = _ref.subtitle,
+    _ref$findings = _ref.findings,
+    findings = _ref$findings === void 0 ? [] : _ref$findings,
+    footnote = _ref.footnote,
+    cta = _ref.cta,
+    className = _ref.className;
+  var sectionStyle = {
+    background: '#ffffff',
+    padding: '4rem 2rem'
+  };
+  var innerStyle = {
+    maxWidth: '1100px',
+    margin: '0 auto'
+  };
+  var headerStyle = {
+    textAlign: 'center',
+    marginBottom: '2.5rem'
+  };
+  var titleStyle = {
+    fontSize: '1.875rem',
+    fontWeight: 700,
+    letterSpacing: '-0.015em',
+    marginBottom: '0.5rem',
+    color: '#0f172a',
+    margin: '0 0 0.5rem'
+  };
+  var subtitleStyle = {
+    fontSize: '1rem',
+    color: '#64748b',
+    margin: 0
+  };
+  var gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '1.5rem'
+  };
+  var cardStyle = {
+    background: '#fff',
+    border: '1px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '1.75rem',
+    display: 'flex',
+    flexDirection: 'column'
+  };
+  var rangeStyle = {
+    display: 'block',
+    fontSize: 'clamp(2rem, 3vw, 2.5rem)',
+    fontWeight: 700,
+    lineHeight: 1.1,
+    letterSpacing: '-0.02em',
+    color: 'var(--gc-primary, #4f46e5)',
+    marginBottom: '0.5rem'
+  };
+  var labelStyle = {
+    fontSize: '1rem',
+    fontWeight: 600,
+    color: '#0f172a',
+    marginBottom: '0.5rem'
+  };
+  var noteStyle = {
+    fontSize: '0.9rem',
+    color: '#64748b',
+    lineHeight: 1.5,
+    marginTop: 'auto'
+  };
+  var footnoteStyle = {
+    marginTop: '2rem',
+    textAlign: 'center',
+    fontSize: '0.825rem',
+    fontStyle: 'italic',
+    color: '#64748b',
+    maxWidth: '720px',
+    margin: '2rem auto 0'
+  };
+  var ctaStyle = {
+    display: 'inline-flex',
+    padding: '0.5rem 1rem',
+    borderRadius: '8px',
+    border: '1px solid var(--gc-primary, #4f46e5)',
+    color: 'var(--gc-primary, #4f46e5)',
+    textDecoration: 'none',
+    fontSize: '0.9rem',
+    fontWeight: 500
+  };
+  var ctaWrapStyle = {
+    marginTop: '1rem',
+    textAlign: 'center'
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    style: sectionStyle,
+    className: clsx('pilot-findings', className)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: innerStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: headerStyle
+  }, /*#__PURE__*/React.createElement("h2", {
+    style: titleStyle
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: subtitleStyle
+  }, subtitle)), /*#__PURE__*/React.createElement("div", {
+    style: gridStyle
+  }, findings.map(function (finding, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: cardStyle
+    }, /*#__PURE__*/React.createElement("span", {
+      style: rangeStyle
+    }, finding.range), /*#__PURE__*/React.createElement("div", {
+      style: labelStyle
+    }, finding.label), finding.note && /*#__PURE__*/React.createElement("p", {
+      style: noteStyle
+    }, finding.note));
+  })), footnote && /*#__PURE__*/React.createElement("p", {
+    style: footnoteStyle
+  }, footnote), cta && cta.text && cta.link && /*#__PURE__*/React.createElement("div", {
+    style: ctaWrapStyle
+  }, /*#__PURE__*/React.createElement("a", {
+    href: cta.link,
+    style: ctaStyle
+  }, cta.text, " \u2192"))));
+};
+
+var dotStyle = function dotStyle(color) {
+  return {
+    width: '10px',
+    height: '10px',
+    borderRadius: '50%',
+    background: color,
+    display: 'inline-block'
+  };
+};
+var DashboardMockup = function DashboardMockup() {
+  var rows = [{
+    tag: 'Bedrock PT',
+    desc: 'Provisioned-throughput right-sized',
+    amount: '$342,800'
+  }, {
+    tag: 'Routing',
+    desc: 'Opus → Sonnet on classify prompts',
+    amount: '$218,440'
+  }, {
+    tag: 'Cache',
+    desc: 'Prompt prefix caching, 6 templates',
+    amount: '$94,210'
+  }, {
+    tag: 'Guard',
+    desc: 'Runaway loop intercepted (May 03)',
+    amount: '$48,720'
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      fontFamily: 'system-ui, -apple-system, sans-serif',
+      color: '#0f172a'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.5rem',
+      padding: '0.7rem 1rem',
+      borderBottom: '1px solid #e5e7eb',
+      background: '#f8fafc'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: dotStyle('#ef4444')
+  }), /*#__PURE__*/React.createElement("span", {
+    style: dotStyle('#eab308')
+  }), /*#__PURE__*/React.createElement("span", {
+    style: dotStyle('#22c55e')
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginLeft: '0.75rem',
+      fontSize: '0.78rem',
+      color: '#64748b',
+      fontFamily: 'ui-monospace, monospace'
+    }
+  }, "tensorcost.app / cfo-summary")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '1.25rem 1.5rem',
+      borderBottom: '1px solid #f1f5f9'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'baseline'
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '0.72rem',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      color: '#64748b',
+      fontWeight: 600
+    }
+  }, "Net savings \u2014 YTD"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '1.85rem',
+      fontWeight: 700,
+      color: '#0f172a',
+      marginTop: '0.2rem',
+      letterSpacing: '-0.02em'
+    }
+  }, "$1,284,520")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'right'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '0.72rem',
+      textTransform: 'uppercase',
+      letterSpacing: '0.08em',
+      color: '#64748b',
+      fontWeight: 600
+    }
+  }, "Bill match"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '1.1rem',
+      fontWeight: 600,
+      color: '#16a34a',
+      marginTop: '0.2rem'
+    }
+  }, "+ 99.4%"))), /*#__PURE__*/React.createElement("svg", {
+    width: "100%",
+    height: "48",
+    viewBox: "0 0 600 48",
+    style: {
+      marginTop: '0.75rem'
+    },
+    preserveAspectRatio: "none"
+  }, /*#__PURE__*/React.createElement("defs", null, /*#__PURE__*/React.createElement("linearGradient", {
+    id: "tc-spark",
+    x1: "0",
+    y1: "0",
+    x2: "0",
+    y2: "1"
+  }, /*#__PURE__*/React.createElement("stop", {
+    offset: "0%",
+    stopColor: "var(--gc-primary, #4f46e5)",
+    stopOpacity: "0.25"
+  }), /*#__PURE__*/React.createElement("stop", {
+    offset: "100%",
+    stopColor: "var(--gc-primary, #4f46e5)",
+    stopOpacity: "0"
+  }))), /*#__PURE__*/React.createElement("path", {
+    d: "M0,38 L40,32 L80,34 L120,28 L160,30 L200,22 L240,24 L280,16 L320,18 L360,12 L400,14 L440,8 L480,11 L520,5 L560,7 L600,2 L600,48 L0,48 Z",
+    fill: "url(#tc-spark)"
+  }), /*#__PURE__*/React.createElement("path", {
+    d: "M0,38 L40,32 L80,34 L120,28 L160,30 L200,22 L240,24 L280,16 L320,18 L360,12 L400,14 L440,8 L480,11 L520,5 L560,7 L600,2",
+    stroke: "var(--gc-primary, #4f46e5)",
+    strokeWidth: "2",
+    fill: "none"
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0.5rem 0'
+    }
+  }, rows.map(function (row, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0.65rem 1.5rem',
+        borderTop: i ? '1px solid #f1f5f9' : 'none',
+        gap: '0.75rem'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        display: 'inline-block',
+        minWidth: '92px',
+        fontSize: '0.7rem',
+        padding: '0.18rem 0.5rem',
+        borderRadius: '4px',
+        background: '#eef2ff',
+        color: 'var(--gc-primary, #4f46e5)',
+        fontWeight: 600,
+        textAlign: 'center'
+      }
+    }, row.tag), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: '0.85rem',
+        color: '#334155',
+        flex: 1
+      }
+    }, row.desc), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: '0.85rem',
+        color: '#16a34a',
+        fontWeight: 600,
+        fontVariantNumeric: 'tabular-nums'
+      }
+    }, row.amount));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0.7rem 1.5rem',
+      borderTop: '1px solid #e5e7eb',
+      background: '#f8fafc',
+      fontSize: '0.72rem',
+      color: '#64748b',
+      fontFamily: 'ui-monospace, monospace',
+      display: 'flex',
+      justifyContent: 'space-between'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "ledger-chain: ok"), /*#__PURE__*/React.createElement("span", null, "a3f2c9b8\u20260f12")));
+};
+var ProductScreenshot = function ProductScreenshot(_ref) {
+  var eyebrow = _ref.eyebrow,
+    _ref$title = _ref.title,
+    title = _ref$title === void 0 ? 'What you see on day one' : _ref$title,
+    body = _ref.body,
+    image = _ref.image,
+    alt = _ref.alt,
+    caption = _ref.caption,
+    _ref$variant = _ref.variant,
+    variant = _ref$variant === void 0 ? 'split' : _ref$variant,
+    _ref$useMockup = _ref.useMockup,
+    useMockup = _ref$useMockup === void 0 ? true : _ref$useMockup,
+    className = _ref.className;
+  var sectionStyle = {
+    background: '#f8fafc',
+    padding: '5rem 2rem'
+  };
+  var innerStyle = _objectSpread2({
+    maxWidth: '1200px',
+    margin: '0 auto'
+  }, variant === 'split' ? {
+    display: 'grid',
+    // Collapses to single column on viewports below ~800px so the
+    // text block and screenshot stack instead of squeezing.
+    gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+    gap: '3rem',
+    alignItems: 'center'
+  } : {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  });
+  var eyebrowStyle = {
+    fontSize: '0.75rem',
+    textTransform: 'uppercase',
+    letterSpacing: '0.12em',
+    fontWeight: 600,
+    color: '#64748b',
+    marginBottom: '0.75rem',
+    display: 'block'
+  };
+  var titleStyle = {
+    fontSize: '1.875rem',
+    fontWeight: 700,
+    letterSpacing: '-0.015em',
+    color: '#0f172a',
+    lineHeight: 1.2,
+    marginBottom: '1rem',
+    margin: '0 0 1rem'
+  };
+  var bodyStyle = {
+    fontSize: '1.05rem',
+    lineHeight: 1.6,
+    color: '#334155',
+    margin: 0
+  };
+  var textColStyle = variant === 'centered' ? {
+    textAlign: 'center',
+    marginBottom: '2.5rem',
+    maxWidth: '640px'
+  } : {};
+  var frameStyle = _objectSpread2({
+    borderRadius: '12px',
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 10px 30px rgba(15, 23, 42, 0.08), 0 4px 10px rgba(15, 23, 42, 0.04)',
+    overflow: 'hidden',
+    background: '#fff'
+  }, variant === 'centered' ? {
+    width: '100%',
+    maxWidth: '900px'
+  } : {});
+  var captionStyle = {
+    fontSize: '0.8rem',
+    color: '#64748b',
+    marginTop: '0.75rem',
+    textAlign: 'center',
+    fontStyle: 'italic'
+  };
+  var showMockup = !image && useMockup;
+  return /*#__PURE__*/React.createElement("section", {
+    style: sectionStyle,
+    className: clsx('product-screenshot', className)
+  }, /*#__PURE__*/React.createElement("div", {
+    style: innerStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: textColStyle
+  }, eyebrow && /*#__PURE__*/React.createElement("span", {
+    style: eyebrowStyle
+  }, eyebrow), title && /*#__PURE__*/React.createElement("h2", {
+    style: titleStyle
+  }, title), body && /*#__PURE__*/React.createElement(MarkdownRichText, {
+    style: bodyStyle
+  }, body)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: frameStyle
+  }, image ? /*#__PURE__*/React.createElement("img", {
+    src: image,
+    alt: alt || title,
+    style: {
+      width: '100%',
+      display: 'block'
+    }
+  }) : showMockup ? /*#__PURE__*/React.createElement(DashboardMockup, null) : null), caption && /*#__PURE__*/React.createElement(MarkdownRichText, {
+    style: captionStyle
+  }, caption))));
+};
+
+/**
+ * CTA Banner Section Component
+ */
+var CTABanner = function CTABanner(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    _ref$backgroundColor = _ref.backgroundColor,
+    backgroundColor = _ref$backgroundColor === void 0 ? '#4f46e5' : _ref$backgroundColor,
+    gradientFrom = _ref.gradientFrom,
+    gradientTo = _ref.gradientTo,
+    _ref$textColor = _ref.textColor,
+    textColor = _ref$textColor === void 0 ? '#ffffff' : _ref$textColor,
+    button = _ref.button,
+    _ref$alignment = _ref.alignment,
+    alignment = _ref$alignment === void 0 ? 'center' : _ref$alignment,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var containerStyle = _objectSpread2(_objectSpread2({}, gradientFrom && gradientTo ? {
+    backgroundImage: "linear-gradient(135deg, ".concat(gradientFrom, ", ").concat(gradientTo, ")")
+  } : {
+    backgroundColor: backgroundColor
+  }), {}, {
+    color: textColor,
+    padding: '4rem 2rem',
+    textAlign: alignment
+  });
+  var contentStyle = {
+    maxWidth: '800px',
+    margin: alignment === 'center' ? '0 auto' : undefined
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('cta-banner-section', className),
+    style: containerStyle
+  }, /*#__PURE__*/React.createElement("div", {
+    style: contentStyle
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+      fontWeight: 700,
+      marginBottom: '0.5rem'
+    }
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '1.2rem',
+      opacity: 0.9,
+      marginBottom: '2rem'
+    }
+  }, subtitle), button && /*#__PURE__*/React.createElement(Button, {
+    text: button.text,
+    link: button.link,
+    variant: button.style || button.variant || 'secondary'
+  })));
+};
+
+/**
+ * FAQ Accordion Section Component
+ */
+var FAQAccordion = function FAQAccordion(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    _ref$items = _ref.items,
+    items = _ref$items === void 0 ? [] : _ref$items,
+    _ref$allowMultipleOpe = _ref.allowMultipleOpen,
+    allowMultipleOpen = _ref$allowMultipleOpe === void 0 ? false : _ref$allowMultipleOpe,
+    _ref$backgroundColor = _ref.backgroundColor,
+    backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var _useState = useState(new Set()),
+    _useState2 = _slicedToArray(_useState, 2),
+    openItems = _useState2[0],
+    setOpenItems = _useState2[1];
+  var toggleItem = function toggleItem(index) {
+    setOpenItems(function (prev) {
+      var newSet = new Set(allowMultipleOpen ? prev : []);
+      if (prev.has(index)) {
+        newSet["delete"](index);
+      } else {
+        newSet.add(index);
+      }
+      return newSet;
+    });
+  };
+  var containerStyle = {
+    background: backgroundColor,
+    padding: '4rem 2rem'
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('faq-accordion-section', className),
+    style: containerStyle
+  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
+    className: "section-header",
+    style: {
+      textAlign: 'center',
+      marginBottom: '3rem',
+      maxWidth: '800px',
+      margin: '0 auto 3rem'
+    }
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: '2.5rem',
+      marginBottom: '0.5rem'
+    }
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '1.2rem',
+      opacity: 0.8
+    }
+  }, subtitle)), /*#__PURE__*/React.createElement("div", {
+    className: "faq-list",
+    style: {
+      maxWidth: '800px',
+      margin: '0 auto'
+    }
+  }, items.map(function (item, index) {
+    return /*#__PURE__*/React.createElement(FAQItem, {
+      key: item.id || index,
+      question: item.question,
+      answer: item.answer,
+      isOpen: openItems.has(index),
+      onToggle: function onToggle() {
+        return toggleItem(index);
+      }
+    });
+  })));
+};
+
+/**
+ * FAQ Item Component
+ */
+var FAQItem = function FAQItem(_ref2) {
+  var question = _ref2.question,
+    answer = _ref2.answer,
+    isOpen = _ref2.isOpen,
+    onToggle = _ref2.onToggle;
+  return /*#__PURE__*/React.createElement("div", {
+    className: "faq-item",
+    style: {
+      borderBottom: '1px solid #e5e7eb',
+      marginBottom: '0.5rem'
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: onToggle,
+    style: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '1.5rem 0',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      textAlign: 'left',
+      fontSize: '1.1rem',
+      fontWeight: 600,
+      color: '#1f2937'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, question), /*#__PURE__*/React.createElement(ChevronDown, {
+    size: 20,
+    style: {
+      transition: 'transform 0.2s',
+      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      flexShrink: 0,
+      marginLeft: '1rem'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      overflow: 'hidden',
+      maxHeight: isOpen ? '1000px' : '0',
+      transition: 'max-height 0.3s ease-out'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      paddingBottom: '1.5rem',
+      color: '#4b5563',
+      lineHeight: 1.7
+    },
+    dangerouslySetInnerHTML: {
+      __html: answer
+    }
+  })));
+};
+
+var _excluded$2 = ["node"];
+
+// Maps the semantic lowercase icon names used by the marketing seed to their
+// PascalCase lucide-react export names. PascalCase names passed directly (e.g.
+// "DollarSign") still work via the fallback lookup below.
+var ICON_ALIASES = {
+  cost: 'DollarSign',
+  gpu: 'Cpu',
+  cpu: 'Cpu',
+  shield: 'Shield',
+  sync: 'RefreshCw',
+  ledger: 'FileCheck2',
+  lightbulb: 'Lightbulb',
+  cfo: 'PieChart',
+  route: 'GitBranch',
+  cache: 'Database',
+  throughput: 'Gauge',
+  forecast: 'LineChart',
+  alert: 'AlertTriangle',
+  platform: 'Server',
+  ml: 'BrainCircuit',
+  finance: 'Receipt'
+};
+
+/**
+ * Feature Grid Section Component
+ */
+var FeatureGrid = function FeatureGrid(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle;
+    _ref.columns;
+    var _ref$features = _ref.features,
+    features = _ref$features === void 0 ? [] : _ref$features,
+    _ref$backgroundColor = _ref.backgroundColor,
+    backgroundColor = _ref$backgroundColor === void 0 ? '#f8f9fa' : _ref$backgroundColor,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var containerStyle = {
+    background: backgroundColor,
+    padding: '4rem 2rem'
+  };
+  var gridStyle = {
+    display: 'grid',
+    // auto-fit + min() collapses gracefully from the requested colCount on
+    // wide viewports all the way down to a single column on mobile.
+    gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+    gap: '2rem',
+    maxWidth: '1200px',
+    margin: '0 auto'
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('feature-grid-section', className),
+    style: containerStyle
+  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
+    className: "section-header",
+    style: {
+      textAlign: 'center',
+      marginBottom: '3rem'
+    }
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: '2.5rem',
+      marginBottom: '0.5rem'
+    }
+  }, title), subtitle && /*#__PURE__*/React.createElement(MarkdownRichText, {
+    style: {
+      fontSize: '1.2rem',
+      opacity: 0.8
+    }
+  }, subtitle)), /*#__PURE__*/React.createElement("div", {
+    className: "feature-grid",
+    style: gridStyle
+  }, features.map(function (feature, index) {
+    return /*#__PURE__*/React.createElement(FeatureCard, _extends({
+      key: feature.id || index
+    }, feature));
+  })));
+};
+
+/**
+ * Feature Card Component
+ */
+var FeatureCard = function FeatureCard(_ref2) {
+  var _image$data;
+  var title = _ref2.title,
+    description = _ref2.description,
+    icon = _ref2.icon,
+    image = _ref2.image,
+    link = _ref2.link,
+    _ref2$linkText = _ref2.linkText,
+    linkText = _ref2$linkText === void 0 ? 'Learn more' : _ref2$linkText;
+  var imageUrl = (image === null || image === void 0 || (_image$data = image.data) === null || _image$data === void 0 || (_image$data = _image$data.attributes) === null || _image$data === void 0 ? void 0 : _image$data.url) || (image === null || image === void 0 ? void 0 : image.url);
+  var resolvedIconName = icon && (ICON_ALIASES[icon] || icon);
+  var IconComponent = resolvedIconName && Icons[resolvedIconName];
+  var cardStyle = {
+    background: '#ffffff',
+    borderRadius: '10px',
+    padding: '2rem',
+    border: '1px solid #e5e7eb',
+    boxShadow: '0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03)',
+    transition: 'transform 0.2s, box-shadow 0.2s, border-color 0.2s',
+    cursor: link ? 'pointer' : 'default'
+  };
+  var handleClick = function handleClick() {
+    if (link) {
+      window.location.href = link;
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "feature-card",
+    style: cardStyle,
+    onClick: handleClick,
+    onMouseEnter: function onMouseEnter(e) {
+      e.currentTarget.style.transform = 'translateY(-4px)';
+      e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04)';
+      e.currentTarget.style.borderColor = '#cbd5e1';
+    },
+    onMouseLeave: function onMouseLeave(e) {
+      e.currentTarget.style.transform = 'translateY(0)';
+      e.currentTarget.style.boxShadow = '0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03)';
+      e.currentTarget.style.borderColor = '#e5e7eb';
+    }
+  }, imageUrl && /*#__PURE__*/React.createElement("img", {
+    src: imageUrl,
+    alt: title,
+    style: {
+      width: '100%',
+      height: '150px',
+      objectFit: 'cover',
+      borderRadius: '8px',
+      marginBottom: '1rem'
+    }
+  }), IconComponent && !imageUrl && /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: '60px',
+      height: '60px',
+      borderRadius: '12px',
+      background: 'linear-gradient(135deg, var(--gc-gradient-from, #6366f1), var(--gc-gradient-to, #4f46e5))',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: '1rem'
+    }
+  }, /*#__PURE__*/React.createElement(IconComponent, {
+    size: 28,
+    color: "#fff"
+  })), title && /*#__PURE__*/React.createElement("h3", {
+    style: {
+      fontSize: '1.25rem',
+      marginBottom: '0.5rem',
+      fontWeight: 600
+    }
+  }, title), description && /*#__PURE__*/React.createElement(MarkdownRichText, {
+    style: {
+      color: '#666',
+      lineHeight: 1.6,
+      marginBottom: link ? '1rem' : 0
+    },
+    components: {
+      a: function a(_ref3) {
+        _ref3.node;
+          var p = _objectWithoutProperties(_ref3, _excluded$2);
+        return /*#__PURE__*/React.createElement("a", _extends({}, p, {
+          style: {
+            color: 'var(--gc-primary, #2563eb)',
+            textDecoration: 'underline'
+          },
+          onClick: function onClick(e) {
+            if (typeof p.onClick === 'function') p.onClick(e);
+            e.stopPropagation();
+          }
+        }));
+      }
+    }
+  }, description), link && /*#__PURE__*/React.createElement("a", {
+    href: link,
+    style: {
+      color: '#4f46e5',
+      textDecoration: 'none',
+      fontWeight: 500,
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.5rem'
+    },
+    onClick: function onClick(e) {
+      return e.stopPropagation();
+    }
+  }, linkText, " \u2192"));
+};
+
+/**
+ * Image Gallery Section Component
+ */
+var ImageGallery = function ImageGallery(_ref) {
+  var _images$data, _images$map, _imageList$currentInd, _imageList$currentInd2;
+  var title = _ref.title,
+    _ref$images = _ref.images,
+    images = _ref$images === void 0 ? [] : _ref$images,
+    _ref$columns = _ref.columns,
+    columns = _ref$columns === void 0 ? '3' : _ref$columns,
+    _ref$enableLightbox = _ref.enableLightbox,
+    enableLightbox = _ref$enableLightbox === void 0 ? true : _ref$enableLightbox,
+    _ref$aspectRatio = _ref.aspectRatio,
+    aspectRatio = _ref$aspectRatio === void 0 ? 'square' : _ref$aspectRatio,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var _useState = useState(false),
+    _useState2 = _slicedToArray(_useState, 2),
+    lightboxOpen = _useState2[0],
+    setLightboxOpen = _useState2[1];
+  var _useState3 = useState(0),
+    _useState4 = _slicedToArray(_useState3, 2),
+    currentIndex = _useState4[0],
+    setCurrentIndex = _useState4[1];
+  var colCount = parseInt(columns, 10);
+  var aspectRatioMap = {
+    square: '1 / 1',
+    portrait: '3 / 4',
+    landscape: '16 / 9',
+    auto: 'auto'
+  };
+
+  // Handle both array of media objects and direct URLs
+  var imageList = (images === null || images === void 0 || (_images$data = images.data) === null || _images$data === void 0 ? void 0 : _images$data.map(function (img) {
+    var _img$attributes, _img$attributes2;
+    return {
+      url: ((_img$attributes = img.attributes) === null || _img$attributes === void 0 ? void 0 : _img$attributes.url) || img.url,
+      alt: ((_img$attributes2 = img.attributes) === null || _img$attributes2 === void 0 ? void 0 : _img$attributes2.alternativeText) || img.alternativeText || ''
+    };
+  })) || ((_images$map = images.map) === null || _images$map === void 0 ? void 0 : _images$map.call(images, function (img) {
+    return {
+      url: img.url || img,
+      alt: img.alt || ''
+    };
+  })) || [];
+  var openLightbox = function openLightbox(index) {
+    if (enableLightbox) {
+      setCurrentIndex(index);
+      setLightboxOpen(true);
+    }
+  };
+  var closeLightbox = function closeLightbox() {
+    return setLightboxOpen(false);
+  };
+  var nextImage = function nextImage() {
+    return setCurrentIndex(function (prev) {
+      return (prev + 1) % imageList.length;
+    });
+  };
+  var prevImage = function prevImage() {
+    return setCurrentIndex(function (prev) {
+      return (prev - 1 + imageList.length) % imageList.length;
+    });
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('image-gallery-section', className),
+    style: {
+      padding: '4rem 2rem'
+    }
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      textAlign: 'center',
+      fontSize: '2.5rem',
+      marginBottom: '2rem'
+    }
+  }, title), /*#__PURE__*/React.createElement("div", {
+    className: "gallery-grid",
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(colCount, ", 1fr)"),
+      gap: '1rem',
+      maxWidth: '1200px',
+      margin: '0 auto'
+    }
+  }, imageList.map(function (image, index) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: index,
+      onClick: function onClick() {
+        return openLightbox(index);
+      },
+      style: {
+        aspectRatio: aspectRatioMap[aspectRatio],
+        overflow: 'hidden',
+        borderRadius: '8px',
+        cursor: enableLightbox ? 'pointer' : 'default',
+        transition: 'transform 0.2s'
+      },
+      onMouseEnter: function onMouseEnter(e) {
+        if (enableLightbox) e.currentTarget.style.transform = 'scale(1.02)';
+      },
+      onMouseLeave: function onMouseLeave(e) {
+        e.currentTarget.style.transform = 'scale(1)';
+      }
+    }, /*#__PURE__*/React.createElement("img", {
+      src: image.url,
+      alt: image.alt,
+      style: {
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover'
+      }
+    }));
+  })), lightboxOpen && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(0,0,0,0.95)',
+      zIndex: 9999,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    onClick: closeLightbox
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: closeLightbox,
+    style: {
+      position: 'absolute',
+      top: '1rem',
+      right: '1rem',
+      background: 'transparent',
+      border: 'none',
+      color: '#fff',
+      cursor: 'pointer',
+      padding: '0.5rem'
+    }
+  }, /*#__PURE__*/React.createElement(X, {
+    size: 32
+  })), imageList.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      prevImage();
+    },
+    style: {
+      position: 'absolute',
+      left: '1rem',
+      background: 'transparent',
+      border: 'none',
+      color: '#fff',
+      cursor: 'pointer',
+      padding: '1rem'
+    }
+  }, /*#__PURE__*/React.createElement(ChevronLeft, {
+    size: 40
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick(e) {
+      e.stopPropagation();
+      nextImage();
+    },
+    style: {
+      position: 'absolute',
+      right: '1rem',
+      background: 'transparent',
+      border: 'none',
+      color: '#fff',
+      cursor: 'pointer',
+      padding: '1rem'
+    }
+  }, /*#__PURE__*/React.createElement(ChevronRight, {
+    size: 40
+  }))), /*#__PURE__*/React.createElement("img", {
+    src: (_imageList$currentInd = imageList[currentIndex]) === null || _imageList$currentInd === void 0 ? void 0 : _imageList$currentInd.url,
+    alt: (_imageList$currentInd2 = imageList[currentIndex]) === null || _imageList$currentInd2 === void 0 ? void 0 : _imageList$currentInd2.alt,
+    onClick: function onClick(e) {
+      return e.stopPropagation();
+    },
+    style: {
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      objectFit: 'contain'
+    }
+  })));
+};
+
+/**
+ * Strapi Context - Provides Strapi configuration and site-scoped data fetching.
+ *
+ * siteSlug scopes ALL queries to a specific site. This is what makes the same
+ * component library work for multiple websites — each site sets its own slug
+ * and only sees its own content from a shared Strapi instance.
+ */
+var StrapiContext = /*#__PURE__*/createContext(null);
+var StrapiProvider = function StrapiProvider(_ref) {
+  var children = _ref.children,
+    apiUrl = _ref.apiUrl,
+    _ref$apiToken = _ref.apiToken,
+    apiToken = _ref$apiToken === void 0 ? null : _ref$apiToken,
+    _ref$siteSlug = _ref.siteSlug,
+    siteSlug = _ref$siteSlug === void 0 ? null : _ref$siteSlug,
+    _ref$cacheTime = _ref.cacheTime,
+    cacheTime = _ref$cacheTime === void 0 ? 60000 : _ref$cacheTime;
+  var _useState = useState({}),
+    _useState2 = _slicedToArray(_useState, 2),
+    cache = _useState2[0],
+    setCache = _useState2[1];
+
+  /**
+   * Fetch data from Strapi API with caching
+   */
+  var fetchFromStrapi = useCallback(/*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(endpoint) {
+      var options,
+        cacheKey,
+        now,
+        headers,
+        response,
+        data,
+        _args = arguments;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+            cacheKey = "".concat(siteSlug || '', ":").concat(endpoint, ":").concat(JSON.stringify(options));
+            now = Date.now(); // Check cache
+            if (!(cache[cacheKey] && now - cache[cacheKey].timestamp < cacheTime)) {
+              _context.n = 1;
+              break;
+            }
+            return _context.a(2, cache[cacheKey].data);
+          case 1:
+            headers = {
+              'Content-Type': 'application/json'
+            };
+            if (apiToken) {
+              headers['Authorization'] = "Bearer ".concat(apiToken);
+            }
+            _context.n = 2;
+            return fetch("".concat(apiUrl, "/api/").concat(endpoint), _objectSpread2({
+              headers: headers
+            }, options));
+          case 2:
+            response = _context.v;
+            if (response.ok) {
+              _context.n = 3;
+              break;
+            }
+            throw new Error("Strapi API error: ".concat(response.status));
+          case 3:
+            _context.n = 4;
+            return response.json();
+          case 4:
+            data = _context.v;
+            // Update cache
+            setCache(function (prev) {
+              return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, cacheKey, {
+                data: data,
+                timestamp: now
+              }));
+            });
+            return _context.a(2, data);
+        }
+      }, _callee);
+    }));
+    return function (_x) {
+      return _ref2.apply(this, arguments);
+    };
+  }(), [apiUrl, apiToken, siteSlug, cacheTime, cache]);
+
+  /**
+   * Fetch a page by its pageType enum, scoped to the current site.
+   *
+   * Query:
+   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=vaadhlabs
+   *       &populate[layout][populate]=*&populate[metadata]=*
+   */
+  var fetchPage = useCallback(/*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee2(pageType) {
+      var _data$data;
+      var endpoint, data;
+      return _regenerator().w(function (_context2) {
+        while (1) switch (_context2.n) {
+          case 0:
+            endpoint = "pages?filters[pageType][$eq]=".concat(pageType);
+            if (siteSlug) {
+              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+            }
+            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
+            _context2.n = 1;
+            return fetchFromStrapi(endpoint);
+          case 1:
+            data = _context2.v;
+            return _context2.a(2, (data === null || data === void 0 || (_data$data = data.data) === null || _data$data === void 0 ? void 0 : _data$data[0]) || null);
+        }
+      }, _callee2);
+    }));
+    return function (_x2) {
+      return _ref3.apply(this, arguments);
+    };
+  }(), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch a custom page by its customSlug, scoped to the current site.
+   */
+  var fetchCustomPage = useCallback(/*#__PURE__*/function () {
+    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3(slug) {
+      var _data$data2;
+      var endpoint, data;
+      return _regenerator().w(function (_context3) {
+        while (1) switch (_context3.n) {
+          case 0:
+            endpoint = "pages?filters[pageType][$eq]=custom&filters[customSlug][$eq]=".concat(slug);
+            if (siteSlug) {
+              endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+            }
+            endpoint += '&populate[layout][populate]=*&populate[metadata]=*';
+            _context3.n = 1;
+            return fetchFromStrapi(endpoint);
+          case 1:
+            data = _context3.v;
+            return _context3.a(2, (data === null || data === void 0 || (_data$data2 = data.data) === null || _data$data2 === void 0 ? void 0 : _data$data2[0]) || null);
+        }
+      }, _callee3);
+    }));
+    return function (_x3) {
+      return _ref4.apply(this, arguments);
+    };
+  }(), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch all pages for the current site (navigation/sitemap).
+   */
+  var fetchAllPages = useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
+    var endpoint, data;
+    return _regenerator().w(function (_context4) {
+      while (1) switch (_context4.n) {
+        case 0:
+          endpoint = 'pages?fields[0]=title&fields[1]=pageType&fields[2]=customSlug&fields[3]=isActive&sort=title:asc';
+          if (siteSlug) {
+            endpoint += "&filters[site][slug][$eq]=".concat(siteSlug);
+          }
+          _context4.n = 1;
+          return fetchFromStrapi(endpoint);
+        case 1:
+          data = _context4.v;
+          return _context4.a(2, (data === null || data === void 0 ? void 0 : data.data) || []);
+      }
+    }, _callee4);
+  })), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Fetch site configuration (branding, navigation, footer, integrations, emailConfig).
+   */
+  var fetchSiteConfig = useCallback(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
+    var _data$data3;
+    var endpoint, data;
+    return _regenerator().w(function (_context5) {
+      while (1) switch (_context5.n) {
+        case 0:
+          if (siteSlug) {
+            _context5.n = 1;
+            break;
+          }
+          return _context5.a(2, null);
+        case 1:
+          endpoint = "sites?filters[slug][$eq]=".concat(siteSlug) + '&populate[brandColors]=*' + '&populate[navigation]=*' + '&populate[footer][populate]=columns.links' + '&populate[integrations]=*' + '&populate[emailConfig]=*';
+          _context5.n = 2;
+          return fetchFromStrapi(endpoint);
+        case 2:
+          data = _context5.v;
+          return _context5.a(2, (data === null || data === void 0 || (_data$data3 = data.data) === null || _data$data3 === void 0 ? void 0 : _data$data3[0]) || null);
+      }
+    }, _callee5);
+  })), [fetchFromStrapi, siteSlug]);
+
+  /**
+   * Submit a form (contact, lead, demo, newsletter, support).
+   *
+   * Uses the custom public endpoint:
+   *   POST /api/form-submissions/submit
+   */
+  var submitForm = useCallback(/*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6(formData) {
+      var response, _error$error, error;
+      return _regenerator().w(function (_context6) {
+        while (1) switch (_context6.n) {
+          case 0:
+            _context6.n = 1;
+            return fetch("".concat(apiUrl, "/api/form-submissions/submit"), {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(_objectSpread2(_objectSpread2({}, formData), {}, {
+                siteSlug: siteSlug
+              }))
+            });
+          case 1:
+            response = _context6.v;
+            if (response.ok) {
+              _context6.n = 3;
+              break;
+            }
+            _context6.n = 2;
+            return response.json()["catch"](function () {
+              return {};
+            });
+          case 2:
+            error = _context6.v;
+            throw new Error((error === null || error === void 0 || (_error$error = error.error) === null || _error$error === void 0 ? void 0 : _error$error.message) || "Submission failed: ".concat(response.status));
+          case 3:
+            return _context6.a(2, response.json());
+        }
+      }, _callee6);
+    }));
+    return function (_x4) {
+      return _ref7.apply(this, arguments);
+    };
+  }(), [apiUrl, siteSlug]);
+
+  /**
+   * Clear cache
+   */
+  var clearCache = useCallback(function () {
+    var endpoint = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+    if (endpoint) {
+      setCache(function (prev) {
+        var newCache = _objectSpread2({}, prev);
+        Object.keys(newCache).forEach(function (key) {
+          if (key.includes(endpoint)) {
+            delete newCache[key];
+          }
+        });
+        return newCache;
+      });
+    } else {
+      setCache({});
+    }
+  }, []);
+  var value = {
+    apiUrl: apiUrl,
+    siteSlug: siteSlug,
+    fetchFromStrapi: fetchFromStrapi,
+    fetchPage: fetchPage,
+    fetchCustomPage: fetchCustomPage,
+    fetchAllPages: fetchAllPages,
+    fetchSiteConfig: fetchSiteConfig,
+    submitForm: submitForm,
+    clearCache: clearCache
+  };
+  return /*#__PURE__*/React.createElement(StrapiContext.Provider, {
+    value: value
+  }, children);
+};
+var useStrapi = function useStrapi() {
+  var context = useContext(StrapiContext);
+  if (!context) {
+    throw new Error('useStrapi must be used within a StrapiProvider');
+  }
+  return context;
+};
+
+/**
+ * Map a Stripe price (as shaped by Strapi's /api/stripe/prices) into the
+ * PricingCard prop shape. Stripe is the source of truth — Strapi proxies +
+ * caches the call, the marketing site renders whatever Stripe says.
+ *
+ * Display rules:
+ *   - contactSales=true        → "Contact us" (no period suffix)
+ *   - unitAmount===0           → "$0" + /interval (e.g. Free tier)
+ *   - else                     → "$<amount>" + /interval
+ */
+var mapStripePriceToCard = function mapStripePriceToCard(price) {
+  var unitDollars = price.unitAmount != null ? price.unitAmount / 100 : null;
+  var period = price.interval && price.interval !== 'one_time' ? "/ ".concat(price.interval) : '';
+  var displayPrice;
+  var displayPeriod;
+  if (price.contactSales) {
+    displayPrice = 'Contact us';
+    displayPeriod = '';
+  } else if (unitDollars === 0) {
+    displayPrice = '$0';
+    displayPeriod = period;
+  } else if (unitDollars != null) {
+    displayPrice = "$".concat(unitDollars.toLocaleString('en-US', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    }));
+    displayPeriod = period;
+  } else {
+    displayPrice = '';
+    displayPeriod = '';
+  }
+  return {
+    id: price.id,
+    name: price.name,
+    description: price.description || '',
+    price: displayPrice,
+    period: displayPeriod,
+    features: price.features || [],
+    cta: {
+      text: price.ctaText || 'Get started',
+      link: price.ctaLink || '/contact',
+      style: price.popular ? 'secondary' : 'primary'
+    },
+    highlighted: !!price.popular,
+    badge: price.popular ? 'Most popular' : '',
+    sortOrder: price.sortOrder || 0
+  };
+};
+
+/**
+ * Pricing Table Section Component.
+ *
+ * Two modes:
+ *   1. Static — pass `plans` from Strapi or any other source. Renders as-is.
+ *   2. Stripe-live — when `plans` is empty AND apiUrl is in StrapiContext,
+ *      fetches /api/stripe/prices and renders the live Stripe Products.
+ *      Stripe is then the single source of truth — edit the Product /
+ *      metadata in Stripe Dashboard and the marketing site reflects within
+ *      the cache TTL (60s strapi cache + browser cache-control).
+ *
+ * On fetch failure, falls back to whatever static `plans` were passed
+ * (empty list → empty grid, which is acceptable degradation for a pricing
+ * page).
+ */
+var PricingTable = function PricingTable(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    _ref$plans = _ref.plans,
+    staticPlans = _ref$plans === void 0 ? [] : _ref$plans,
+    _ref$showToggle = _ref.showToggle,
+    showToggle = _ref$showToggle === void 0 ? true : _ref$showToggle,
+    _ref$monthlyLabel = _ref.monthlyLabel,
+    monthlyLabel = _ref$monthlyLabel === void 0 ? 'Monthly' : _ref$monthlyLabel,
+    _ref$yearlyLabel = _ref.yearlyLabel,
+    yearlyLabel = _ref$yearlyLabel === void 0 ? 'Yearly' : _ref$yearlyLabel,
+    _ref$backgroundColor = _ref.backgroundColor,
+    backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var _useState = useState('monthly'),
+    _useState2 = _slicedToArray(_useState, 2),
+    billingPeriod = _useState2[0],
+    setBillingPeriod = _useState2[1];
+  var _useState3 = useState(null),
+    _useState4 = _slicedToArray(_useState3, 2),
+    livePlans = _useState4[0],
+    setLivePlans = _useState4[1];
+
+  // Pull apiUrl from StrapiContext if available. Outside a provider, useStrapi
+  // throws — guard so storybook / standalone usage still works.
+  var apiUrl;
+  try {
+    var _ref2 = useStrapi() || {};
+    apiUrl = _ref2.apiUrl;
+  } catch (_) {
+    apiUrl = null;
+  }
+  var shouldFetchLive = staticPlans.length === 0 && !!apiUrl;
+  useEffect(function () {
+    if (!shouldFetchLive) return;
+    var cancelled = false;
+    _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var res, body, mapped;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.p = _context.n) {
+          case 0:
+            _context.p = 0;
+            _context.n = 1;
+            return fetch("".concat(apiUrl, "/api/stripe/prices"));
+          case 1:
+            res = _context.v;
+            if (res.ok) {
+              _context.n = 2;
+              break;
+            }
+            return _context.a(2);
+          case 2:
+            _context.n = 3;
+            return res.json();
+          case 3:
+            body = _context.v;
+            if (!cancelled) {
+              _context.n = 4;
+              break;
+            }
+            return _context.a(2);
+          case 4:
+            if (body !== null && body !== void 0 && body.configured && Array.isArray(body.prices)) {
+              mapped = body.prices.map(mapStripePriceToCard).sort(function (a, b) {
+                return a.sortOrder - b.sortOrder;
+              });
+              setLivePlans(mapped);
+            }
+            _context.n = 6;
+            break;
+          case 5:
+            _context.p = 5;
+            _context.v;
+          case 6:
+            return _context.a(2);
+        }
+      }, _callee, null, [[0, 5]]);
+    }))();
+    return function () {
+      cancelled = true;
+    };
+  }, [shouldFetchLive, apiUrl]);
+
+  // Resolution order: static plans (when provided) → live Stripe plans → empty.
+  var plans = staticPlans.length > 0 ? staticPlans : livePlans || [];
+
+  // Auto-detect if toggle is useful: only show if plans use monthlyPrice/yearlyPrice
+  var hasLegacyPricing = plans.some(function (p) {
+    return p.monthlyPrice != null || p.yearlyPrice != null;
+  });
+  var shouldShowToggle = showToggle && hasLegacyPricing;
+  var containerStyle = {
+    background: backgroundColor,
+    padding: '4rem 2rem'
+  };
+  return /*#__PURE__*/React.createElement("section", {
+    className: clsx('pricing-table-section', className),
+    style: containerStyle
+  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
+    className: "section-header",
+    style: {
+      textAlign: 'center',
+      marginBottom: '2rem'
+    }
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: '2.5rem',
+      marginBottom: '0.5rem'
+    }
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '1.2rem',
+      opacity: 0.8
+    }
+  }, subtitle)), shouldShowToggle && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '1rem',
+      marginBottom: '3rem'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: billingPeriod === 'monthly' ? 600 : 400,
+      color: billingPeriod === 'monthly' ? '#1f2937' : '#9ca3af'
+    }
+  }, monthlyLabel), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setBillingPeriod(function (p) {
+        return p === 'monthly' ? 'yearly' : 'monthly';
+      });
+    },
+    style: {
+      width: '56px',
+      height: '28px',
+      borderRadius: '14px',
+      background: 'var(--gc-primary, #4f46e5)',
+      border: 'none',
+      cursor: 'pointer',
+      position: 'relative',
+      padding: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      position: 'absolute',
+      top: '2px',
+      left: billingPeriod === 'yearly' ? '30px' : '2px',
+      width: '24px',
+      height: '24px',
+      borderRadius: '50%',
+      background: '#fff',
+      transition: 'left 0.2s'
+    }
+  })), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: billingPeriod === 'yearly' ? 600 : 400,
+      color: billingPeriod === 'yearly' ? '#1f2937' : '#9ca3af'
+    }
+  }, yearlyLabel)), /*#__PURE__*/React.createElement("div", {
+    className: "pricing-grid",
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(Math.min(plans.length, 4), ", 1fr)"),
+      gap: '2rem',
+      maxWidth: '1200px',
+      margin: '0 auto',
+      alignItems: 'stretch'
+    }
+  }, plans.map(function (plan, index) {
+    return /*#__PURE__*/React.createElement(PricingCard, _extends({
+      key: plan.id || index
+    }, plan, {
+      billingPeriod: billingPeriod
+    }));
+  })));
+};
+
+/**
+ * Pricing Card Component
+ * Supports both legacy props (monthlyPrice, yearlyPrice, ctaButton, features as [{text,included}])
+ * and Strapi props (price, period, cta, isPopular, features as string[])
+ */
+var PricingCard = function PricingCard(_ref4) {
+  var name = _ref4.name,
+    description = _ref4.description,
+    monthlyPrice = _ref4.monthlyPrice,
+    yearlyPrice = _ref4.yearlyPrice,
+    strapiPrice = _ref4.price,
+    strapiPeriod = _ref4.period,
+    _ref4$currency = _ref4.currency,
+    currency = _ref4$currency === void 0 ? '$' : _ref4$currency,
+    billingPeriod = _ref4.billingPeriod,
+    _ref4$features = _ref4.features,
+    features = _ref4$features === void 0 ? [] : _ref4$features,
+    ctaButton = _ref4.ctaButton,
+    cta = _ref4.cta,
+    _ref4$highlighted = _ref4.highlighted,
+    highlighted = _ref4$highlighted === void 0 ? false : _ref4$highlighted,
+    isPopular = _ref4.isPopular,
+    badge = _ref4.badge;
+  // Resolve highlighted from either prop
+  var isHighlighted = highlighted || isPopular || false;
+
+  // Resolve price: prefer Strapi's flat `price` string, fallback to legacy monthly/yearly
+  var displayPrice;
+  var displayPeriod;
+  if (strapiPrice !== undefined) {
+    // Strapi format: price is a string like "Free", "$49", "Custom"
+    displayPrice = strapiPrice;
+    displayPeriod = strapiPeriod || '';
+  } else {
+    // Legacy format: monthlyPrice / yearlyPrice are numbers
+    var numPrice = billingPeriod === 'yearly' && yearlyPrice ? yearlyPrice : monthlyPrice;
+    displayPrice = numPrice != null ? "".concat(currency).concat(numPrice) : '';
+    displayPeriod = billingPeriod === 'yearly' ? '/year' : '/month';
+  }
+
+  // Resolve CTA button: Strapi sends `cta`, legacy sends `ctaButton`
+  var resolvedCta = cta || ctaButton;
+
+  // Resolve badge for popular plans
+  var resolvedBadge = badge || (isPopular ? 'Most Popular' : null);
+
+  // Normalize features: handle both string[] and [{text, included}]
+  var normalizedFeatures = features.map(function (f) {
+    if (typeof f === 'string') {
+      return {
+        text: f,
+        included: true
+      };
+    }
+    return f;
+  });
+  var cardStyle = {
+    background: isHighlighted ? 'linear-gradient(135deg, var(--gc-gradient-from, #6366f1) 0%, var(--gc-gradient-to, #4f46e5) 100%)' : '#fff',
+    color: isHighlighted ? '#fff' : '#1f2937',
+    borderRadius: '16px',
+    padding: '2rem',
+    border: isHighlighted ? undefined : '1px solid #e5e7eb',
+    boxShadow: isHighlighted ? '0 20px 40px var(--gc-primary-shadow, rgba(79, 70, 229, 0.3))' : '0 1px 2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(15, 23, 42, 0.04)',
+    position: 'relative',
+    transform: isHighlighted ? 'scale(1.05)' : 'scale(1)',
+    display: 'flex',
+    flexDirection: 'column'
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "pricing-card",
+    style: cardStyle
+  }, resolvedBadge && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: '-12px',
+      left: '50%',
+      transform: 'translateX(-50%)',
+      background: isHighlighted ? '#fff' : 'var(--gc-primary, #4f46e5)',
+      color: isHighlighted ? 'var(--gc-primary, #4f46e5)' : '#fff',
+      padding: '0.25rem 1rem',
+      borderRadius: '20px',
+      fontSize: '0.875rem',
+      fontWeight: 600
+    }
+  }, resolvedBadge), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      marginBottom: '1.5rem'
+    }
+  }, /*#__PURE__*/React.createElement("h3", {
+    style: {
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      marginBottom: '0.5rem'
+    }
+  }, name), description && /*#__PURE__*/React.createElement("p", {
+    style: {
+      opacity: 0.8,
+      fontSize: '0.9rem'
+    }
+  }, description)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      marginBottom: '2rem'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: '3rem',
+      fontWeight: 700
+    }
+  }, displayPrice), displayPeriod && /*#__PURE__*/React.createElement("span", {
+    style: {
+      opacity: 0.8
+    }
+  }, displayPeriod)), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      listStyle: 'none',
+      padding: 0,
+      margin: 0,
+      marginBottom: '2rem',
+      flex: 1
+    }
+  }, normalizedFeatures.map(function (feature, idx) {
+    return /*#__PURE__*/React.createElement("li", {
+      key: idx,
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.75rem',
+        padding: '0.5rem 0',
+        opacity: feature.included !== false ? 1 : 0.5
+      }
+    }, feature.included !== false ? /*#__PURE__*/React.createElement(Check, {
+      size: 18,
+      color: isHighlighted ? '#fff' : '#22c55e'
+    }) : /*#__PURE__*/React.createElement(X, {
+      size: 18,
+      color: isHighlighted ? 'rgba(255,255,255,0.5)' : '#ef4444'
+    }), /*#__PURE__*/React.createElement("span", null, feature.text));
+  })), resolvedCta && /*#__PURE__*/React.createElement(Button, {
+    text: resolvedCta.text || resolvedCta.label,
+    link: resolvedCta.link || resolvedCta.href || resolvedCta.url,
+    variant: isHighlighted ? 'secondary' : resolvedCta.style || resolvedCta.variant || 'primary',
+    size: "large",
+    style: {
+      width: '100%',
+      background: isHighlighted ? '#fff' : undefined,
+      color: isHighlighted ? 'var(--gc-primary, #4f46e5)' : undefined
+    }
+  }));
+};
+
+/**
+ * Stats Counter Section Component
+ */
+var StatsCounter = function StatsCounter(_ref) {
+  var title = _ref.title,
+    subtitle = _ref.subtitle,
+    _ref$stats = _ref.stats,
+    stats = _ref$stats === void 0 ? [] : _ref$stats,
+    _ref$backgroundColor = _ref.backgroundColor,
+    backgroundColor = _ref$backgroundColor === void 0 ? '#4f46e5' : _ref$backgroundColor,
+    gradientFrom = _ref.gradientFrom,
+    gradientTo = _ref.gradientTo,
+    _ref$textColor = _ref.textColor,
+    textColor = _ref$textColor === void 0 ? '#ffffff' : _ref$textColor,
+    _ref$animateOnScroll = _ref.animateOnScroll,
+    animateOnScroll = _ref$animateOnScroll === void 0 ? true : _ref$animateOnScroll,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className;
+  var _useState = useState(!animateOnScroll),
+    _useState2 = _slicedToArray(_useState, 2),
+    isVisible = _useState2[0],
+    setIsVisible = _useState2[1];
+  var sectionRef = useRef(null);
+  useEffect(function () {
+    if (!animateOnScroll) return;
+    var observer = new IntersectionObserver(function (_ref2) {
+      var _ref3 = _slicedToArray(_ref2, 1),
+        entry = _ref3[0];
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, {
+      threshold: 0.2
+    });
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    return function () {
+      return observer.disconnect();
+    };
+  }, [animateOnScroll]);
+  var containerStyle = _objectSpread2(_objectSpread2({}, gradientFrom && gradientTo ? {
+    backgroundImage: "linear-gradient(135deg, ".concat(gradientFrom, ", ").concat(gradientTo, ")")
+  } : {
+    backgroundColor: backgroundColor
+  }), {}, {
+    color: textColor,
+    padding: '4rem 2rem'
+  });
+  return /*#__PURE__*/React.createElement("section", {
+    ref: sectionRef,
+    className: clsx('stats-counter-section', className),
+    style: containerStyle
+  }, (title || subtitle) && /*#__PURE__*/React.createElement("div", {
+    className: "section-header",
+    style: {
+      textAlign: 'center',
+      marginBottom: '3rem'
+    }
+  }, title && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: '2.5rem',
+      marginBottom: '0.5rem'
+    }
+  }, title), subtitle && /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: '1.2rem',
+      opacity: 0.9
+    }
+  }, subtitle)), /*#__PURE__*/React.createElement("div", {
+    className: "stats-grid",
+    style: {
+      display: 'grid',
+      gridTemplateColumns: "repeat(".concat(Math.min(stats.length, 4), ", 1fr)"),
+      gap: '2rem',
+      maxWidth: '1200px',
+      margin: '0 auto',
+      textAlign: 'center'
+    }
+  }, stats.map(function (stat, index) {
+    return /*#__PURE__*/React.createElement(StatItem, _extends({
+      key: stat.id || index
+    }, stat, {
+      isVisible: isVisible,
+      delay: index * 100
+    }));
+  })));
+};
+
+/**
+ * Stat Item Component with counter animation
+ */
+var StatItem = function StatItem(_ref4) {
+  var value = _ref4.value,
+    label = _ref4.label,
+    _ref4$prefix = _ref4.prefix,
+    prefix = _ref4$prefix === void 0 ? '' : _ref4$prefix,
+    _ref4$suffix = _ref4.suffix,
+    suffix = _ref4$suffix === void 0 ? '' : _ref4$suffix,
+    icon = _ref4.icon,
+    isVisible = _ref4.isVisible,
+    _ref4$delay = _ref4.delay,
+    delay = _ref4$delay === void 0 ? 0 : _ref4$delay;
+  var _useState3 = useState('0'),
+    _useState4 = _slicedToArray(_useState3, 2),
+    displayValue = _useState4[0],
+    setDisplayValue = _useState4[1];
+  var IconComponent = icon && Icons[icon];
+
+  // Parse numeric value for animation
+  var numericValue = parseFloat(value === null || value === void 0 ? void 0 : value.replace(/[^0-9.]/g, '')) || 0;
+  var isNumeric = !isNaN(numericValue) && numericValue > 0;
+  useEffect(function () {
+    if (!isVisible || !isNumeric) {
+      setDisplayValue(value);
+      return;
+    }
+    var duration = 2000;
+    var steps = 60;
+    var stepDuration = duration / steps;
+    var increment = numericValue / steps;
+    var current = 0;
+    var timer = setTimeout(function () {
+      var interval = setInterval(function () {
+        current += increment;
+        if (current >= numericValue) {
+          setDisplayValue(value);
+          clearInterval(interval);
+        } else {
+          setDisplayValue(Math.floor(current).toLocaleString());
+        }
+      }, stepDuration);
+      return function () {
+        return clearInterval(interval);
+      };
+    }, delay);
+    return function () {
+      return clearTimeout(timer);
+    };
+  }, [isVisible, value, numericValue, isNumeric, delay]);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "stat-item"
+  }, IconComponent && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: '1rem'
+    }
+  }, /*#__PURE__*/React.createElement(IconComponent, {
+    size: 40,
+    strokeWidth: 1.5
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+      fontWeight: 700,
+      marginBottom: '0.5rem'
+    }
+  }, prefix, displayValue, suffix), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: '1rem',
+      opacity: 0.9,
+      textTransform: 'uppercase',
+      letterSpacing: '0.05em'
+    }
+  }, label));
+};
+
 /**
  * Tabs Section Component
  */
@@ -66362,7 +67465,7 @@ var TabsSection = function TabsSection(_ref) {
     backgroundColor = _ref$backgroundColor === void 0 ? '#ffffff' : _ref$backgroundColor,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(defaultTab),
+  var _useState = useState(defaultTab),
     _useState2 = _slicedToArray(_useState, 2),
     activeTab = _useState2[0],
     setActiveTab = _useState2[1];
@@ -66468,7 +67571,7 @@ var Testimonials = function Testimonials(_ref) {
     backgroundColor = _ref$backgroundColor === void 0 ? '#f8f9fa' : _ref$backgroundColor,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(0),
+  var _useState = useState(0),
     _useState2 = _slicedToArray(_useState, 2),
     currentIndex = _useState2[0],
     setCurrentIndex = _useState2[1];
@@ -66478,7 +67581,7 @@ var Testimonials = function Testimonials(_ref) {
   };
 
   // Auto-advance carousel
-  React.useEffect(function () {
+  useEffect(function () {
     if (displayMode === 'carousel' && items.length > 1) {
       var timer = setInterval(function () {
         setCurrentIndex(function (prev) {
@@ -66847,7 +67950,7 @@ var VideoEmbed = function VideoEmbed(_ref) {
     aspectRatio = _ref$aspectRatio === void 0 ? '16:9' : _ref$aspectRatio,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState(autoplay),
+  var _useState = useState(autoplay),
     _useState2 = _slicedToArray(_useState, 2),
     showVideo = _useState2[0],
     setShowVideo = _useState2[1];
@@ -67000,6 +68103,7 @@ var VideoEmbed = function VideoEmbed(_ref) {
 var ContentBlock = function ContentBlock(_ref) {
   var title = _ref.title,
     heading = _ref.heading,
+    eyebrow = _ref.eyebrow,
     content = _ref.content,
     body = _ref.body,
     _ref$backgroundColor = _ref.backgroundColor,
@@ -67043,21 +68147,31 @@ var ContentBlock = function ContentBlock(_ref) {
     style: containerStyle
   }, /*#__PURE__*/React.createElement("div", {
     style: contentStyle
-  }, resolvedTitle && /*#__PURE__*/React.createElement("h2", {
+  }, eyebrow && /*#__PURE__*/React.createElement("span", {
     style: {
-      fontSize: '2rem',
-      marginBottom: '1.5rem',
-      fontWeight: 700
+      display: 'block',
+      textTransform: 'uppercase',
+      letterSpacing: '0.12em',
+      fontSize: '0.75rem',
+      fontWeight: 600,
+      color: '#64748b',
+      marginBottom: '0.75rem'
+    }
+  }, eyebrow), resolvedTitle && /*#__PURE__*/React.createElement("h2", {
+    style: {
+      fontSize: '1.875rem',
+      marginBottom: '1.25rem',
+      fontWeight: 700,
+      lineHeight: 1.25,
+      letterSpacing: '-0.015em'
     }
   }, resolvedTitle), /*#__PURE__*/React.createElement("div", {
     className: "content-body",
     style: {
-      lineHeight: 1.8,
-      fontSize: '1.1rem'
+      lineHeight: 1.7,
+      fontSize: '1.05rem'
     }
-  }, /*#__PURE__*/React.createElement(Markdown, {
-    rehypePlugins: [rehypeRaw]
-  }, resolvedContent || ''))));
+  }, /*#__PURE__*/React.createElement(MarkdownRichText, null, resolvedContent || ''))));
 };
 
 /**
@@ -67074,8 +68188,8 @@ var CustomHTML = function CustomHTML(_ref) {
     sandboxed = _ref$sandboxed === void 0 ? true : _ref$sandboxed,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var containerRef = React.useRef(null);
-  React.useEffect(function () {
+  var containerRef = useRef(null);
+  useEffect(function () {
     if (!containerRef.current) return;
 
     // Inject CSS
@@ -67158,26 +68272,26 @@ var DataTable = function DataTable(_ref) {
     pageSize = _ref$pageSize === void 0 ? 10 : _ref$pageSize,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState([]),
+  var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     data = _useState2[0],
     setData = _useState2[1];
-  var _useState3 = React.useState(false),
+  var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = React.useState(''),
+  var _useState5 = useState(''),
     _useState6 = _slicedToArray(_useState5, 2),
     searchTerm = _useState6[0],
     setSearchTerm = _useState6[1];
-  var _useState7 = React.useState({
+  var _useState7 = useState({
       key: null,
       direction: 'asc'
     }),
     _useState8 = _slicedToArray(_useState7, 2),
     sortConfig = _useState8[0],
     setSortConfig = _useState8[1];
-  var _useState9 = React.useState(1),
+  var _useState9 = useState(1),
     _useState0 = _slicedToArray(_useState9, 2),
     currentPage = _useState0[0],
     setCurrentPage = _useState0[1];
@@ -67187,7 +68301,7 @@ var DataTable = function DataTable(_ref) {
     fetchFromStrapi = _ref2.fetchFromStrapi;
 
   // Load data based on source
-  React.useEffect(function () {
+  useEffect(function () {
     var loadData = /*#__PURE__*/function () {
       var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
         var response, result, _result$data, _result, items, _t, _t2;
@@ -67262,7 +68376,7 @@ var DataTable = function DataTable(_ref) {
   }, [dataSource, apiEndpoint, strapiCollection, staticData, fetchFromStrapi]);
 
   // Filter data by search term
-  var filteredData = React.useMemo(function () {
+  var filteredData = useMemo(function () {
     if (!searchTerm) return data;
     return data.filter(function (row) {
       return columns.some(function (col) {
@@ -67273,7 +68387,7 @@ var DataTable = function DataTable(_ref) {
   }, [data, searchTerm, columns]);
 
   // Sort data
-  var sortedData = React.useMemo(function () {
+  var sortedData = useMemo(function () {
     if (!sortConfig.key) return filteredData;
     return _toConsumableArray(filteredData).sort(function (a, b) {
       var aValue = a[sortConfig.key];
@@ -67285,7 +68399,7 @@ var DataTable = function DataTable(_ref) {
   }, [filteredData, sortConfig]);
 
   // Paginate data
-  var paginatedData = React.useMemo(function () {
+  var paginatedData = useMemo(function () {
     if (!enablePagination) return sortedData;
     var start = (currentPage - 1) * pageSize;
     return sortedData.slice(start, start + pageSize);
@@ -67742,12 +68856,12 @@ var FileUpload = function FileUpload(_ref) {
     maxSize = _ref.maxSize,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var inputRef = React.useRef(null);
-  var _useState = React.useState(false),
+  var inputRef = useRef(null);
+  var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     dragActive = _useState2[0],
     setDragActive = _useState2[1];
-  var _useState3 = React.useState([]),
+  var _useState3 = useState([]),
     _useState4 = _slicedToArray(_useState3, 2),
     files = _useState4[0],
     setFiles = _useState4[1];
@@ -67951,19 +69065,19 @@ var FormSection = function FormSection(_ref) {
     onFormSubmit = _ref.onFormSubmit,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
-  var _useState = React.useState({}),
+  var _useState = useState({}),
     _useState2 = _slicedToArray(_useState, 2),
     formData = _useState2[0],
     setFormData = _useState2[1];
-  var _useState3 = React.useState(false),
+  var _useState3 = useState(false),
     _useState4 = _slicedToArray(_useState3, 2),
     submitting = _useState4[0],
     setSubmitting = _useState4[1];
-  var _useState5 = React.useState(false),
+  var _useState5 = useState(false),
     _useState6 = _slicedToArray(_useState5, 2),
     submitted = _useState6[0],
     setSubmitted = _useState6[1];
-  var _useState7 = React.useState(null),
+  var _useState7 = useState(null),
     _useState8 = _slicedToArray(_useState7, 2),
     error = _useState8[0],
     setError = _useState8[1];
@@ -68566,23 +69680,23 @@ var useForm = function useForm(fields) {
     acc[field.name] = field.defaultValue || '';
     return acc;
   }, {});
-  var _useState = React.useState(initialValues),
+  var _useState = useState(initialValues),
     _useState2 = _slicedToArray(_useState, 2),
     values = _useState2[0],
     setValues = _useState2[1];
-  var _useState3 = React.useState({}),
+  var _useState3 = useState({}),
     _useState4 = _slicedToArray(_useState3, 2),
     errors = _useState4[0],
     setErrors = _useState4[1];
-  var _useState5 = React.useState({}),
+  var _useState5 = useState({}),
     _useState6 = _slicedToArray(_useState5, 2),
     touched = _useState6[0],
     setTouched = _useState6[1];
-  var _useState7 = React.useState(false),
+  var _useState7 = useState(false),
     _useState8 = _slicedToArray(_useState7, 2),
     submitting = _useState8[0],
     setSubmitting = _useState8[1];
-  var _useState9 = React.useState(false),
+  var _useState9 = useState(false),
     _useState0 = _slicedToArray(_useState9, 2),
     submitted = _useState0[0],
     setSubmitted = _useState0[1];
@@ -68590,7 +69704,7 @@ var useForm = function useForm(fields) {
   /**
    * Validate a single field
    */
-  var validateField = React.useCallback(function (field, value) {
+  var validateField = useCallback(function (field, value) {
     if (field.required && !value) {
       return "".concat(field.label, " is required");
     }
@@ -68632,7 +69746,7 @@ var useForm = function useForm(fields) {
   /**
    * Validate all fields
    */
-  var validateAll = React.useCallback(function () {
+  var validateAll = useCallback(function () {
     var newErrors = {};
     fields.forEach(function (field) {
       var error = validateField(field, values[field.name]);
@@ -68647,7 +69761,7 @@ var useForm = function useForm(fields) {
   /**
    * Handle field change
    */
-  var handleChange = React.useCallback(function (name, value) {
+  var handleChange = useCallback(function (name, value) {
     setValues(function (prev) {
       return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, name, value));
     });
@@ -68667,7 +69781,7 @@ var useForm = function useForm(fields) {
   /**
    * Handle field blur
    */
-  var handleBlur = React.useCallback(function (name) {
+  var handleBlur = useCallback(function (name) {
     setTouched(function (prev) {
       return _objectSpread2(_objectSpread2({}, prev), {}, _defineProperty({}, name, true));
     });
@@ -68685,7 +69799,7 @@ var useForm = function useForm(fields) {
   /**
    * Handle form submit
    */
-  var handleSubmit = React.useCallback(/*#__PURE__*/function () {
+  var handleSubmit = useCallback(/*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(e) {
       var _t;
       return _regenerator().w(function (_context) {
@@ -68742,7 +69856,7 @@ var useForm = function useForm(fields) {
   /**
    * Reset form
    */
-  var reset = React.useCallback(function () {
+  var reset = useCallback(function () {
     setValues(initialValues);
     setErrors({});
     setTouched({});
@@ -68752,7 +69866,7 @@ var useForm = function useForm(fields) {
   /**
    * Check if field should be visible (conditional display)
    */
-  var isFieldVisible = React.useCallback(function (field) {
+  var isFieldVisible = useCallback(function (field) {
     if (!field.conditionalDisplay) return true;
     var _field$conditionalDis = field.conditionalDisplay,
       condField = _field$conditionalDis.field,
@@ -68804,19 +69918,19 @@ var useForm = function useForm(fields) {
 var useNavigation = function useNavigation() {
   var _useStrapi = useStrapi(),
     fetchAllPages = _useStrapi.fetchAllPages;
-  var _useState = React.useState([]),
+  var _useState = useState([]),
     _useState2 = _slicedToArray(_useState, 2),
     pages = _useState2[0],
     setPages = _useState2[1];
-  var _useState3 = React.useState(true),
+  var _useState3 = useState(true),
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = React.useState(null),
+  var _useState5 = useState(null),
     _useState6 = _slicedToArray(_useState5, 2),
     error = _useState6[0],
     setError = _useState6[1];
-  React.useEffect(function () {
+  useEffect(function () {
     var mounted = true;
     var loadPages = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
@@ -69007,19 +70121,19 @@ var usePage = function usePage(pageType, customSlug) {
   var _useStrapi = useStrapi(),
     fetchPage = _useStrapi.fetchPage,
     fetchCustomPage = _useStrapi.fetchCustomPage;
-  var _useState = React.useState(null),
+  var _useState = useState(null),
     _useState2 = _slicedToArray(_useState, 2),
     page = _useState2[0],
     setPage = _useState2[1];
-  var _useState3 = React.useState(true),
+  var _useState3 = useState(true),
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = React.useState(null),
+  var _useState5 = useState(null),
     _useState6 = _slicedToArray(_useState5, 2),
     error = _useState6[0],
     setError = _useState6[1];
-  React.useEffect(function () {
+  useEffect(function () {
     if (!pageType) {
       setLoading(false);
       return;
@@ -69101,19 +70215,19 @@ var useSiteConfig = function useSiteConfig() {
   var _useStrapi = useStrapi(),
     fetchSiteConfig = _useStrapi.fetchSiteConfig,
     siteSlug = _useStrapi.siteSlug;
-  var _useState = React.useState(null),
+  var _useState = useState(null),
     _useState2 = _slicedToArray(_useState, 2),
     site = _useState2[0],
     setSite = _useState2[1];
-  var _useState3 = React.useState(true),
+  var _useState3 = useState(true),
     _useState4 = _slicedToArray(_useState3, 2),
     loading = _useState4[0],
     setLoading = _useState4[1];
-  var _useState5 = React.useState(null),
+  var _useState5 = useState(null),
     _useState6 = _slicedToArray(_useState5, 2),
     error = _useState6[0],
     setError = _useState6[1];
-  React.useEffect(function () {
+  useEffect(function () {
     if (!siteSlug) {
       setLoading(false);
       return;
@@ -69205,23 +70319,23 @@ var useSiteConfig = function useSiteConfig() {
 var useFormSubmission = function useFormSubmission() {
   var _useStrapi = useStrapi(),
     submitForm = _useStrapi.submitForm;
-  var _useState = React.useState(false),
+  var _useState = useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     loading = _useState2[0],
     setLoading = _useState2[1];
-  var _useState3 = React.useState(null),
+  var _useState3 = useState(null),
     _useState4 = _slicedToArray(_useState3, 2),
     error = _useState4[0],
     setError = _useState4[1];
-  var _useState5 = React.useState(false),
+  var _useState5 = useState(false),
     _useState6 = _slicedToArray(_useState5, 2),
     success = _useState6[0],
     setSuccess = _useState6[1];
-  var _useState7 = React.useState(null),
+  var _useState7 = useState(null),
     _useState8 = _slicedToArray(_useState7, 2),
     submissionId = _useState8[0],
     setSubmissionId = _useState8[1];
-  var submit = React.useCallback(/*#__PURE__*/function () {
+  var submit = useCallback(/*#__PURE__*/function () {
     var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(formData) {
       var _result$data, result, _t;
       return _regenerator().w(function (_context) {
@@ -69256,7 +70370,7 @@ var useFormSubmission = function useFormSubmission() {
       return _ref.apply(this, arguments);
     };
   }(), [submitForm]);
-  var reset = React.useCallback(function () {
+  var reset = useCallback(function () {
     setLoading(false);
     setError(null);
     setSuccess(false);
@@ -69287,8 +70401,8 @@ var useFormSubmission = function useFormSubmission() {
  *   useAnalytics(integrations);
  */
 var useAnalytics = function useAnalytics(integrations) {
-  var injectedRef = React.useRef(false);
-  React.useEffect(function () {
+  var injectedRef = useRef(false);
+  useEffect(function () {
     if (!integrations || injectedRef.current) return;
     injectedRef.current = true;
 
@@ -69361,7 +70475,7 @@ var useAnalytics = function useAnalytics(integrations) {
   /**
    * Track a custom event (works with GA4 and Facebook Pixel).
    */
-  var trackEvent = React.useCallback(function (eventName) {
+  var trackEvent = useCallback(function (eventName) {
     var params = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     // GA4
     if (window.gtag) {
@@ -69384,7 +70498,7 @@ var useAnalytics = function useAnalytics(integrations) {
   /**
    * Track a page view (called on route change in SPA).
    */
-  var trackPageView = React.useCallback(function (path, title) {
+  var trackPageView = useCallback(function (path, title) {
     if (window.gtag) {
       window.gtag('event', 'page_view', {
         page_path: path,
@@ -69430,6 +70544,13 @@ var COMPONENT_REGISTRY = {
   'layout.timeline': Timeline,
   'layout.tabs-section': TabsSection,
   'layout.custom-html': CustomHTML,
+  'layout.stats-strip': StatsStrip,
+  'layout.proof': Proof,
+  'layout.guarantee': Guarantee,
+  'layout.logos-strip': LogosStrip,
+  'layout.comparison': Comparison,
+  'layout.pilot-findings': PilotFindings,
+  'layout.product-screenshot': ProductScreenshot,
   // Legacy: sections.* — backward compatibility
   'sections.hero': Hero,
   'sections.content-block': ContentBlock,
@@ -69445,7 +70566,14 @@ var COMPONENT_REGISTRY = {
   'sections.stats-counter': StatsCounter,
   'sections.timeline': Timeline,
   'sections.tabs-section': TabsSection,
-  'sections.custom-html': CustomHTML
+  'sections.custom-html': CustomHTML,
+  'sections.stats-strip': StatsStrip,
+  'sections.proof': Proof,
+  'sections.guarantee': Guarantee,
+  'sections.logos-strip': LogosStrip,
+  'sections.comparison': Comparison,
+  'sections.pilot-findings': PilotFindings,
+  'sections.product-screenshot': ProductScreenshot
 };
 
 /**
@@ -69739,7 +70867,7 @@ var PageRenderer = function PageRenderer(_ref) {
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? '' : _ref$className;
   // Scroll to top when page changes
-  React.useEffect(function () {
+  useEffect(function () {
     if (scrollToTop && page) {
       window.scrollTo(0, 0);
     }
@@ -69845,12 +70973,9 @@ var getPageMeta = function getPageMeta(page) {
   };
 };
 
-exports.Button = Button;
-exports.CTABanner = CTABanner;
-exports.Checkbox = Checkbox;
-exports.ComponentRenderer = ComponentRenderer;
-exports.ContentBlock = ContentBlock;
-exports.CustomHTML = CustomHTML;
+export { Button, CTABanner, Checkbox, Comparison, ComponentRenderer, ContentBlock, CustomHTML, DataTable, DatePicker, FAQAccordion, FeatureGrid, FileUpload, FormRenderer, FormSection, Guarantee, Hero, ImageGallery, LogosStrip, PageRenderer, PilotFindings, PricingTable, ProductScreenshot, Proof, RadioGroup, Select, StatsCounter, StatsStrip, StrapiProvider, TabsSection, Testimonials, TextArea, TextField, Timeline, VideoEmbed, getPageMeta, getPagePath, getRegisteredComponents, registerComponent, registerField, resolvePageType, useAnalytics, useForm, useFormSubmission, useNavigation, usePage, useSiteConfig, useStrapi };
+//# sourceMappingURL=index.js.map
+ts.CustomHTML = CustomHTML;
 exports.DataTable = DataTable;
 exports.DatePicker = DatePicker;
 exports.FAQAccordion = FAQAccordion;
@@ -69858,13 +70983,19 @@ exports.FeatureGrid = FeatureGrid;
 exports.FileUpload = FileUpload;
 exports.FormRenderer = FormRenderer;
 exports.FormSection = FormSection;
+exports.Guarantee = Guarantee;
 exports.Hero = Hero;
 exports.ImageGallery = ImageGallery;
+exports.LogosStrip = LogosStrip;
 exports.PageRenderer = PageRenderer;
+exports.PilotFindings = PilotFindings;
 exports.PricingTable = PricingTable;
+exports.ProductScreenshot = ProductScreenshot;
+exports.Proof = Proof;
 exports.RadioGroup = RadioGroup;
 exports.Select = Select;
 exports.StatsCounter = StatsCounter;
+exports.StatsStrip = StatsStrip;
 exports.StrapiProvider = StrapiProvider;
 exports.TabsSection = TabsSection;
 exports.Testimonials = Testimonials;

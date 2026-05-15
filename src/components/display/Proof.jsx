@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import MarkdownRichText from '../content/MarkdownRichText';
 
 const Proof = ({
   title = 'Verify it yourself.',
@@ -106,7 +107,24 @@ const Proof = ({
         </div>
         <div style={copyBlockStyle}>
           <h2 style={titleStyle}>{title}</h2>
-          {body && <p style={bodyStyle}>{body}</p>}
+          {body && (
+            <MarkdownRichText
+              style={bodyStyle}
+              components={{
+                a: ({ node, ...p }) => (
+                  <a
+                    {...p}
+                    style={{
+                      color: 'var(--gc-primary, #38bdf8)',
+                      textDecoration: 'underline',
+                    }}
+                  />
+                ),
+              }}
+            >
+              {body}
+            </MarkdownRichText>
+          )}
           {ctaText && ctaLink && (
             <a href={ctaLink} style={ctaStyle}>
               {ctaText} →

@@ -28,10 +28,21 @@ describe('FeatureGrid', () => {
     expect(screen.getByText('Blazing speed')).toBeInTheDocument();
   });
 
-  it('renders correct number of columns in grid', () => {
+  it('renders markdown links inside descriptions', () => {
+    const feats = [
+      { title: 'Docs', description: 'Read [the guide](https://docs.example.com/start) for details.' },
+    ];
+    render(<FeatureGrid features={feats} />);
+    const link = screen.getByRole('link', { name: /the guide/i });
+    expect(link).toHaveAttribute('href', 'https://docs.example.com/start');
+  });
+
+  it('uses responsive grid columns', () => {
     const { container } = render(<FeatureGrid features={features} columns="4" />);
     const grid = container.querySelector('.feature-grid');
-    expect(grid.style.gridTemplateColumns).toBe('repeat(4, 1fr)');
+    expect(grid.style.gridTemplateColumns).toBe(
+      'repeat(auto-fit, minmax(min(260px, 100%), 1fr))'
+    );
   });
 
   it('renders link when provided', () => {
