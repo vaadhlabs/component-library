@@ -62,7 +62,7 @@ export const StrapiProvider = ({
    * Fetch a page by its pageType enum, scoped to the current site.
    *
    * Query:
-   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=vaadhlabs
+   *   GET /api/pages?filters[pageType][$eq]=home&filters[site][slug][$eq]=tensorcost
    *       &populate[layout][populate]=*&populate[metadata]=*
    */
   const fetchPage = useCallback(async (pageType) => {
